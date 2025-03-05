@@ -20,18 +20,35 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ExceptionHandlerController {
 
+	/**
+	 * Exception handler for User Not Found
+	 * @param e {@link UserNotFoundException}
+	 * @return {@link ExceptionResponse} with status 404
+	 */
 	@ExceptionHandler(UserNotFoundException.class)
 	public ResponseEntity<ExceptionResponse> handleUserNotFoundException(UserNotFoundException e) {
 		log.error(e.getMessage());
 		return new ResponseEntity<>(exceptionGenerator((short)404, "User not found", e.getMessage()), HttpStatus.NOT_FOUND);
 	}
 	
+	/**
+	 * Exception handler for generic Exception
+	 * @param e {@link Exception}
+	 * @return {@link ExceptionResponse} with status 500
+	 */
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ExceptionResponse> handleUserException(Exception e) {
 		log.error(e.getMessage(), e.fillInStackTrace());
 		return new ResponseEntity<>(exceptionGenerator((short)500, "Unkown exception occured", e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
+	/**
+	 * Create exception response
+	 * @param status status code
+	 * @param error error title
+	 * @param detail error description
+	 * @return {@link ExceptionResponse}
+	 */
 	private ExceptionResponse exceptionGenerator(short status, String error, String detail) {
 		return new ExceptionResponse(status, error, detail);
 	}

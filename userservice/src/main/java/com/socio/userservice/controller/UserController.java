@@ -34,27 +34,51 @@ public class UserController {
 		this.service = service;
 	}
 
+	/**
+	 * Create a user
+	 * @param user {@link RequestUserDto}
+	 * @return {@link ResponseUserDto}
+	 */
 	@PostMapping
 	public ResponseEntity<ResponseUserDto> createUser(@ModelAttribute RequestUserDto user) {
 		return new ResponseEntity<>(service.createUser(user), HttpStatus.CREATED);
 	}
 
+	/**
+	 * Get User by Id
+	 * @param id {@link Long}
+	 * @return {@link ResponseUserDto}
+	 */
 	@GetMapping("/{id}")
 	public ResponseEntity<ResponseUserDto> getUser(@PathVariable("id") long id) {
 		return new ResponseEntity<>(service.getUser(id), HttpStatus.OK);
 	}
 
+	/**
+	 * Get all users
+	 * @return List of {@link ResponseUserDto}
+	 */
 	@GetMapping
 	public ResponseEntity<List<ResponseUserDto>> getUser() {
 		return new ResponseEntity<>(service.getUser(), HttpStatus.OK);
 	}
 
+	/**
+	 * Update user details
+	 * @param user {@link RequestUserDto}
+	 * @param id {@link Long}
+	 * @return {@link ResponseUserDto}
+	 */
 	@PutMapping("/{id}")
 	public ResponseEntity<ResponseUserDto> updateUser(@ModelAttribute RequestUserDto user,
 			@PathVariable("id") long id) {
 		return new ResponseEntity<>(service.updateUser(user, id), HttpStatus.OK);
 	}
 
+	/**
+	 * Delete user
+	 * @param id {@link Long}
+	 */
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public void deleteUser(@PathVariable("id") long id) {

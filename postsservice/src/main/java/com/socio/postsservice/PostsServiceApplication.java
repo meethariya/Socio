@@ -16,6 +16,10 @@ public class PostsServiceApplication {
 		SpringApplication.run(PostsServiceApplication.class, args);
 	}
 
+	/**
+	 * Bean for Model Mapper
+	 * @return {@link ModelMapper}
+	 */
 	@Bean
 	ModelMapper modelMapper() {
 		ModelMapper modelMapper = new ModelMapper();
