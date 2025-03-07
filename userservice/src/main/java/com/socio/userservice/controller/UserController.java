@@ -21,18 +21,17 @@ import com.socio.userservice.dto.RequestUserDto;
 import com.socio.userservice.dto.ResponseUserDto;
 import com.socio.userservice.service.UserService;
 
+import lombok.AllArgsConstructor;
+
 /**
  * Controller layer for user model
  */
 @RestController
 @RequestMapping("/user")
+@AllArgsConstructor
 public class UserController {
 
 	private UserService service;
-
-	public UserController(UserService service) {
-		this.service = service;
-	}
 
 	/**
 	 * Create a user

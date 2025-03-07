@@ -16,21 +16,18 @@ import com.socio.userservice.model.User;
 import com.socio.userservice.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 
 /**
  * Implementation for {@link UserService}
  */
 @Service
 @Transactional
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
 	private ModelMapper modelMapper;
 	private UserRepository repo;
-
-	public UserServiceImpl(ModelMapper modelMapper, UserRepository repo) {
-		this.modelMapper = modelMapper;
-		this.repo = repo;
-	}
 
 	@Override
 	public ResponseUserDto createUser(RequestUserDto user) {

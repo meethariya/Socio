@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 public class ResponseUserDto {
 
-	private long userId;
+	private long id;
 	
 	private String username;
 	

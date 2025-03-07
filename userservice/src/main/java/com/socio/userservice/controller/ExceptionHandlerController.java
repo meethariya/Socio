@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.socio.userservice.dto.ExceptionResponse;
+import com.socio.userservice.exception.DuplicateFriendshipException;
+import com.socio.userservice.exception.FriendshipNotFoundException;
 import com.socio.userservice.exception.UserNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,28 @@ public class ExceptionHandlerController {
 	public ResponseEntity<ExceptionResponse> handleUserNotFoundException(UserNotFoundException e) {
 		log.error(e.getMessage());
 		return new ResponseEntity<>(exceptionGenerator((short)404, "User not found", e.getMessage()), HttpStatus.NOT_FOUND);
+	}
+	
+	/**
+	 * Exception handler for Friendship Not Found
+	 * @param e {@link FriendshipNotFoundException}
+	 * @return {@link ExceptionResponse} with status 404
+	 */
+	@ExceptionHandler(FriendshipNotFoundException.class)
+	public ResponseEntity<ExceptionResponse> handleFriendshipNotFoundException(FriendshipNotFoundException e) {
+		log.error(e.getMessage());
+		return new ResponseEntity<>(exceptionGenerator((short)404, "Friend not found", e.getMessage()), HttpStatus.NOT_FOUND);
+	}
+	
+	/**
+	 * Exception handler for Duplicate friend request
+	 * @param e {@link DuplicateFriendshipException}
+	 * @return {@link ExceptionResponse} with status 409
+	 */
+	@ExceptionHandler(DuplicateFriendshipException.class)
+	public ResponseEntity<ExceptionResponse> handleDuplicateFriendShipException(DuplicateFriendshipException e) {
+		log.error(e.getMessage());
+		return new ResponseEntity<>(exceptionGenerator((short)409, "Duplicate request", e.getMessage()), HttpStatus.CONFLICT);
 	}
 	
 	/**
