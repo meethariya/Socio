@@ -5,6 +5,8 @@ package com.socio.userservice.model;
 
 import java.util.Date;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
@@ -38,10 +40,12 @@ public class Friendship {
 	
 	@ManyToOne
 	@JoinColumn(nullable = false, updatable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User sender;
 	
 	@ManyToOne
 	@JoinColumn(nullable = false, updatable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User receiver;
 	
 	@Enumerated(EnumType.STRING)
