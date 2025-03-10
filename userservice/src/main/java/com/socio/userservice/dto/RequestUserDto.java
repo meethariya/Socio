@@ -13,7 +13,7 @@ public class RequestUserDto {
 
 	private String username;
 	
-	private String password;
+	private long authId;
 	
 	private String email;
 	

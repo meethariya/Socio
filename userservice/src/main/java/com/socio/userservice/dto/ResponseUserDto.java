@@ -18,4 +18,6 @@ public class ResponseUserDto {
 	private String email;
 	
 	private String name; 
+	
+	private long authId;
 }

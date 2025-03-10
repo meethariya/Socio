@@ -27,8 +27,8 @@ public class User{
 	@Column(unique = true, updatable = false, nullable = false)
 	private String email;
 	
-	@Column(nullable = false)
-	private String password;
+	@Column(unique = true, updatable = false, nullable = false)
+	private long authId;
 	
 	@Column(nullable = false)
 	private String name;
