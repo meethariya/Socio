@@ -3,6 +3,7 @@
  */
 package com.socio.userservice.controller;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -51,6 +52,18 @@ public class ExceptionHandlerController {
 	 */
 	@ExceptionHandler(DuplicateFriendshipException.class)
 	public ResponseEntity<ExceptionResponse> handleDuplicateFriendShipException(DuplicateFriendshipException e) {
+		log.error(e.getMessage());
+		return new ResponseEntity<>(exceptionGenerator((short)409, "Duplicate request", e.getMessage()), HttpStatus.CONFLICT);
+	}
+	
+	
+	/**
+	 * Exception handler for DataIntegrityViolation Exception
+	 * @param e {@link DataIntegrityViolationException}
+	 * @return {@link ExceptionResponse} with status 409
+	 */
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<ExceptionResponse> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
 		log.error(e.getMessage());
 		return new ResponseEntity<>(exceptionGenerator((short)409, "Duplicate request", e.getMessage()), HttpStatus.CONFLICT);
 	}

@@ -3,6 +3,7 @@
  */
 package com.socio.authservice.controller;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -75,6 +76,19 @@ public class ExceptionHandlerController {
 		log.error(e.getMessage());
 		return new ResponseEntity<>(exceptionGenerator((short) 401, UNAUTHORIZED, e.getMessage()),
 				HttpStatus.UNAUTHORIZED);
+	}
+	
+	/**
+	 * Exception handler for DataIntegrityViolation Exception
+	 * 
+	 * @param e {@link Exception}
+	 * @return {@link ExceptionResponse} with status 409
+	 */
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<ExceptionResponse> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+		log.error(e.getMessage());
+		return new ResponseEntity<>(exceptionGenerator((short) 409, "Invalid Input", e.getMessage()),
+				HttpStatus.CONFLICT);
 	}
 
 	/**

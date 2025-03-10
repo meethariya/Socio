@@ -55,6 +55,17 @@ public class AuthController {
 	}
 
 	/**
+	 * Get auth details by username
+	 * 
+	 * @param request {@link AuthRequest}
+	 * @return token
+	 */
+	@GetMapping("/get-auth/{username}")
+	public ResponseEntity<AuthResponse> generateToken(@PathVariable("username") String username) {
+		return new ResponseEntity<>(service.getAuth(username), HttpStatus.OK);
+	}
+
+	/**
 	 * Change auth password
 	 * 
 	 * @param id      auth id

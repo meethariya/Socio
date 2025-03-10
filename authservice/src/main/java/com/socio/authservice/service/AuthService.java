@@ -51,4 +51,12 @@ public interface AuthService extends UserDetailsService {
 	 * @param username user's username
 	 */
 	void deleteAuth(String username);
+
+	/**
+	 * Get auth details by username
+	 * 
+	 * @param username user's username
+	 * @return {@link AuthResponse}
+	 */
+	AuthResponse getAuth(String username);
 }

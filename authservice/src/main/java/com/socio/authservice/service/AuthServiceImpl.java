@@ -9,6 +9,7 @@ import java.util.Optional;
 import javax.crypto.SecretKey;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -50,12 +51,11 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	public AuthResponse createAuth(AuthRequest request) {
 		Optional<Auth> byUsername = repository.findByUsername(request.getUsername());
-		Auth auth;
 		if (byUsername.isPresent()) {
-			auth = byUsername.get();
-		} else {
-			auth = requestToModel(request);
+			throw new DataIntegrityViolationException("Username: "+ request.getUsername() +" is already taken");
 		}
+		
+		Auth auth = requestToModel(request);
 		auth.setPassword(encoder.encode(request.getPassword()));
 		return modelToResponse(repository.save(auth));
 	}
@@ -71,7 +71,9 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public AuthResponse changePassword(long id, AuthRequest request) {
-		return createAuth(request);
+		Auth details = repository.findById(id).orElseThrow(()->new BadCredentialsException("Account does not exists"));
+		details.setPassword(encoder.encode(request.getPassword()));
+		return modelToResponse(repository.save(details));
 	}
 
 	@Override
@@ -84,6 +86,11 @@ public class AuthServiceImpl implements AuthService {
 		repository.deleteByUsername(username);
 	}
 
+	@Override
+	public AuthResponse getAuth(String username) {
+		return modelToResponse(loadUserByUsername(username));
+	}
+	
 	@Override
 	public Auth loadUserByUsername(String username) throws UsernameNotFoundException {
 		return repository.findByUsername(username)

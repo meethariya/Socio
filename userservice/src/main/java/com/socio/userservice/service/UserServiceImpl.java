@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.socio.userservice.dto.RequestUserDto;
@@ -33,18 +34,12 @@ public class UserServiceImpl implements UserService {
 	public ResponseUserDto createUser(RequestUserDto user) {
 		Optional<User> byUsername = repo.findByUsername(user.getUsername());
 		if (byUsername.isPresent()) {
-			User user2 = byUsername.get();
-			user2.setName(user.getName());
-			user2.setPassword(user.getPassword());
-			return modelToResponse(repo.save(user2));
+			throw new DataIntegrityViolationException("Username: "+user.getUsername()+" is taken");
 		}
 
 		Optional<User> byEmail = repo.findByEmail(user.getEmail());
 		if (byEmail.isPresent()) {
-			User user2 = byEmail.get();
-			user2.setName(user.getName());
-			user2.setPassword(user.getPassword());
-			return modelToResponse(repo.save(user2));
+			throw new DataIntegrityViolationException("User already exists with email: "+user.getEmail());
 		}
 
 		return modelToResponse(repo.save(requestToModel(user)));
@@ -62,7 +57,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public ResponseUserDto updateUser(RequestUserDto user, long id) {
-		return createUser(user);
+		User user2 = repo.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+		user2.setName(user.getName());
+		return modelToResponse(repo.save(user2));
 	}
 
 	@Override
