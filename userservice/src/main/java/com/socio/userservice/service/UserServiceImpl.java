@@ -10,10 +10,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import com.socio.userservice.dto.AuthRequest;
+import com.socio.userservice.dto.AuthResponse;
 import com.socio.userservice.dto.RequestUserDto;
 import com.socio.userservice.dto.ResponseUserDto;
 import com.socio.userservice.exception.UserNotFoundException;
 import com.socio.userservice.model.User;
+import com.socio.userservice.openfeign.AuthClient;
 import com.socio.userservice.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
@@ -29,20 +32,25 @@ public class UserServiceImpl implements UserService {
 
 	private ModelMapper modelMapper;
 	private UserRepository repo;
+	private AuthClient authClient;
 
 	@Override
 	public ResponseUserDto createUser(RequestUserDto user) {
 		Optional<User> byUsername = repo.findByUsername(user.getUsername());
 		if (byUsername.isPresent()) {
-			throw new DataIntegrityViolationException("Username: "+user.getUsername()+" is taken");
+			throw new DataIntegrityViolationException("Username: " + user.getUsername() + " is taken");
 		}
 
 		Optional<User> byEmail = repo.findByEmail(user.getEmail());
 		if (byEmail.isPresent()) {
-			throw new DataIntegrityViolationException("User already exists with email: "+user.getEmail());
+			throw new DataIntegrityViolationException("User already exists with email: " + user.getEmail());
 		}
-
-		return modelToResponse(repo.save(requestToModel(user)));
+		AuthRequest authRequest = AuthRequest.builder().username(user.getUsername()).password(user.getPassword())
+				.build();
+		AuthResponse auth = authClient.createAuth(authRequest);
+		User requestToModel = requestToModel(user);
+		requestToModel.setAuthId(auth.getId());
+		return modelToResponse(repo.save(requestToModel));
 	}
 
 	@Override
@@ -64,7 +72,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void deleteUser(long id) {
+		User user2 = repo.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 		repo.deleteById(id);
+		authClient.deleteAuth(user2.getUsername());
 	}
 
 	/**

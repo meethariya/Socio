@@ -61,7 +61,7 @@ public class AuthController {
 	 * @return token
 	 */
 	@GetMapping("/get-auth/{username}")
-	public ResponseEntity<AuthResponse> generateToken(@PathVariable("username") String username) {
+	public ResponseEntity<AuthResponse> getAuth(@PathVariable("username") String username) {
 		return new ResponseEntity<>(service.getAuth(username), HttpStatus.OK);
 	}
 

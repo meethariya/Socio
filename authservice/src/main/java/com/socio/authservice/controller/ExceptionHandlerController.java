@@ -7,6 +7,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -25,6 +26,18 @@ import lombok.extern.slf4j.Slf4j;
 public class ExceptionHandlerController {
 
 	private static final String UNAUTHORIZED = "Unauthorized";
+
+	/**
+	 * Exception handler for UsernameNotFound Exception
+	 * 
+	 * @param e {@link UsernameNotFoundException}
+	 * @return {@link ExceptionResponse} with status 404
+	 */
+	@ExceptionHandler(UsernameNotFoundException.class)
+	public ResponseEntity<ExceptionResponse> handleUsernameNotFoundException(UsernameNotFoundException e) {
+		log.error(e.getMessage());
+		return new ResponseEntity<>(exceptionGenerator((short) 404, "Not Found", e.getMessage()),HttpStatus.NOT_FOUND);
+	}
 	
 	/**
 	 * Exception handler for BadCredentials Exception

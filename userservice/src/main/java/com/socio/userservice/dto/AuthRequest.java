@@ -1,22 +1,19 @@
 /**
- * 03-Mar-2025
+ * 09-Mar-2025
  */
 package com.socio.userservice.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
- * Request DTO for user model 
+ * Request DTO for Auth model
  */
 @Data
-public class RequestUserDto {
+@Builder
+public class AuthRequest {
 
 	private String username;
 	
 	private String password;
-	
-	private String email;
-	
-	private String name;
-	
 }
