@@ -1,0 +1,37 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: 'http://localhost:8003/eureka/'
+  instance:
+    prefer-ip-address: true
+server:
+  port: 8004
+spring:
+  application:
+    name: apigateway
+  cloud:
+    gateway:
+      routes:
+        - id: userservice
+          uri: 'lb://userservice'
+          predicates:
+            - 'Path=/user/**, /friend/**'
+        - id: authservice
+          uri: 'lb://authservice'
+          predicates:
+            - Path=/auth/**
+        - id: postsservice
+          uri: 'lb://postsservice'
+          predicates:
+            - Path=/post/**
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: 'localhost:4200'
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: '*'
