@@ -1,0 +1,25 @@
+footer{
+  background-color: var(--navy);
+  height: var(--footer-height);
+}
+nav{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logo-group{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: var(--off-white);
+  margin-top: auto;
+  margin-bottom: auto;
+  a{
+    text-decoration: none;
+  }
+  p{
+    margin: 0;
+  }
+}

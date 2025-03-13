@@ -1,0 +1,34 @@
+:root {
+  --beige: #fbf5dd;
+  --teal: #a6cdc6;
+  --navy: #16404d;
+  --orange: #dda853;
+  --jet-black: #222222;
+  --off-white: #f8f9fa;
+  --font-roboto: "Roboto", sans-serif;
+  --font-lora: "Lora", serif;
+  --header-height: 60px;
+  --footer-height: 100px;
+}
+
+html,body {
+  margin: 0;
+  padding: 0;
+  color: var(--jet-black);
+}
+* {
+  font-family: var(--font-roboto);
+  font-optical-sizing: auto;
+}
+h1,h2,h3,h4,h5,h6 {
+  font-family: var(--font-lora);
+}
+main {
+  min-height: 100vh;
+}
+body:has(header) main {
+  padding-top: var(--header-height);
+}
+body:has(footer) main {
+  min-height: calc(100vh - var(--footer-height));
+}

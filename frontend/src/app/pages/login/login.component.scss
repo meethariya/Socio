@@ -1,0 +1,26 @@
+section.login-section{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+form.login-form{
+  width: clamp(320px, 25%, 600px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  a:has(img){
+    align-self: center;
+  }
+  h1{
+    font-weight: 700;
+  }
+  a.register-link{
+    font-size: 12px;
+  }
+  button[type=submit]{
+    background-color: var(--orange);
+    color: var(--off-white);
+  }
+}
