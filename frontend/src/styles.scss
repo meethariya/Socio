@@ -32,3 +32,6 @@ body:has(header) main {
 body:has(footer) main {
   min-height: calc(100vh - var(--footer-height));
 }
+.invalid{
+  color: var(--bs-form-invalid-color);
+}

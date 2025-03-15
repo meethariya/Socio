@@ -49,7 +49,7 @@ public class AuthController {
 	 * @param request {@link AuthRequest}
 	 * @return token
 	 */
-	@GetMapping
+	@PostMapping(path = "/generate-token", produces = "text/plain")
 	public String generateToken(@ModelAttribute AuthRequest request) {
 		return service.generateToken(request);
 	}

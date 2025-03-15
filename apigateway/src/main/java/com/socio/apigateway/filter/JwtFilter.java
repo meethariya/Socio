@@ -58,6 +58,7 @@ public class JwtFilter implements GlobalFilter, Ordered{
 
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+		
 		// if route is open, don't validate it
 		if(this.isOpenRoute.test(exchange.getRequest())) return chain.filter(exchange);
 		
@@ -109,7 +110,7 @@ public class JwtFilter implements GlobalFilter, Ordered{
 		String method = req.getMethod().name();
 		return (
 				path.equals("/user") && method.equals("POST") ||
-				path.equals("/auth") && method.equals("GET")  ||
+				path.equals("/auth/generate-token") && method.equals("POST")  ||
 				path.equals("/auth/validate-token") && method.equals("GET")
 		);
 	};

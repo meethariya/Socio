@@ -1,24 +1,30 @@
 <main>
   <section class="login-section">
-    <form class="login-form">
+    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
       <a routerLink="/">
         <img src="favicon.ico" alt="Logo" height="48" width="48">
       </a>
       <h1>Login</h1>
       <div class="form-floating">
-        <input type="text" class="form-control" id="username" placeholder="Jhon Doe" autocomplete="username">
+        <input type="text" class="form-control" id="username" placeholder="Jhon Doe" autocomplete="username" formControlName="username" aria-describedby="usernameHelp">
         <label for="username">Username</label>
+        @if (loginForm.get('username')?.invalid && loginForm.get('username')?.touched) {
+          <div id="usernameHelp" class="form-text invalid">Username is required.</div>
+        }
       </div>
       <div class="form-floating">
-        <input type="password" class="form-control" id="password" placeholder="Password">
+        <input type="password" class="form-control" id="password" placeholder="Password" formControlName="password" aria-describedby="passwordHelp">
         <label for="password">Password</label>
+        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+          <div id="passwordHelp" class="form-text invalid">Password is required.</div>
+        }
       </div>
       <div class="form-check">
-        <input type="checkbox" class="form-check-input" id="rememberMe">
+        <input type="checkbox" class="form-check-input" id="rememberMe" formControlName="rememberMe">
         <label class="form-check-label" for="rememberMe">Remember me</label>
       </div>
       <a class="register-link" routerLink="/sign-up">Dont have an account? Sign up</a>
-      <button type="submit" class="btn">Login</button>
+      <button type="submit" class="btn" [disabled]="loginForm.invalid">Login</button>
     </form>
   </section>
 </main>

@@ -5,7 +5,12 @@
       <h3>{{title()}}</h3>
     </a>
     <div class="login-group">
-      <a type="button" class="btn login" routerLink="/login">Login</a>
+      @if (authService.getToken()==null) {
+        <a type="button" class="btn login" routerLink="/login">Login</a>
+      }
+      @else{
+        <button class="btn logout" (click)="logout()">Logout</button>
+      }
     </div>
   </nav>
 </header>
