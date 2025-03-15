@@ -1,0 +1,7 @@
+<div class="alert-container">
+  @for (alert of alerts(); track alert.id) {
+  <div class="alert alert-{{alert.type}}" role="alert">
+    {{alert.message}}
+  </div>
+  }
+</div>

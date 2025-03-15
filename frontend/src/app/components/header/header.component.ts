@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-header',
@@ -10,12 +11,13 @@ import { AuthService } from '../../services/auth.service';
 })
 export class HeaderComponent {
   authService = inject(AuthService);
+  alertService = inject(AlertService);
   router = inject(Router);
   title = signal("Socio");
 
   logout(){
     this.authService.clearTokens();
-    this.router.navigate(["/"]);
-    console.log("Logged out");
+    this.router.navigate(["/login"]);
+    this.alertService.pushAlert("success","Successfully logged out");
   }
 }

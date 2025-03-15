@@ -8,6 +8,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,7 @@ import {
 })
 export class LoginComponent {
   authService = inject(AuthService);
+  alertService = inject(AlertService);
   router = inject(Router);
 
   loginForm = new FormGroup({
@@ -39,14 +41,16 @@ export class LoginComponent {
     this.authService.login(formData).subscribe({
       next: (token: string) => {
         this.authService.setToken(token, this.loginForm.value.rememberMe == null ? false : this.loginForm.value.rememberMe);
-        console.log("Logged In");
+        this.alertService.pushAlert("success","Successfully logged in");
         this.router.navigate(['/']);
       },
-      error(err) {
+      error: (err) => {
         if (typeof err.error === 'string') {
-          err = JSON.parse(err.error) as ExceptionResponse;
+          const exception:ExceptionResponse = JSON.parse(err.error) as ExceptionResponse;
+          this.alertService.pushAlert("danger",exception.detail);
+        } else{
+          this.alertService.pushAlert("danger",err.error);
         }
-        console.error(err);
       },
     });
   }

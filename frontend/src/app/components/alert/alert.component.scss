@@ -1,0 +1,27 @@
+@use "../../../_variables.scss" as vars;
+.alert-container{
+  position: fixed;
+  overflow: hidden;
+  bottom: 0;
+  right: 0;
+  height: auto;
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 1rem;
+  gap: 1rem;
+  z-index: 9;
+  @media only screen and (max-width: (vars.$bs-breakpoint-md - 1)) {
+    width: 90%;
+  }
+  @media only screen and (min-width: vars.$bs-breakpoint-md) and (max-width: vars.$bs-breakpoint-lg) {
+    width: 70%;
+  }
+  @media only screen and (min-width: (vars.$bs-breakpoint-lg + 1)) {
+    width: 500px;
+  }
+  .alert{
+    margin: 0;
+    opacity: 0.8;
+    user-select: none;
+  }
+}
