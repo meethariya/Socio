@@ -1,0 +1,42 @@
+<app-header></app-header>
+<main>
+  <section class="signup-section">
+    <form class="signup-form" [formGroup]="signUpForm" (ngSubmit)="register()">
+      <h1>Sign up</h1>
+
+      <div class="form-floating">
+        <input type="text" class="form-control" id="username" placeholder="Jhon Doe" autocomplete="username" formControlName="username" aria-describedby="usernameHelp">
+        <label for="username">Username</label>
+        @if (signUpForm.get('username')?.invalid && signUpForm.get('username')?.touched) {
+          <div id="usernameHelp" class="form-text invalid">Username is required.</div>
+        }
+      </div>
+
+      <div class="form-floating">
+        <input type="password" class="form-control" id="password" placeholder="Password" formControlName="password" aria-describedby="passwordHelp">
+        <label for="password">Password</label>
+        @if (signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched) {
+          <div id="passwordHelp" class="form-text invalid">Password is required.</div>
+        }
+      </div>
+
+      <div class="form-floating">
+        <input type="email" class="form-control" id="email" placeholder="email" autocomplete="email" formControlName="email" aria-describedby="emailHelp">
+        <label for="email">Email</label>
+        @if (signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched) {
+          <div id="emailHelp" class="form-text invalid">Email is required.</div>
+        }
+      </div>
+
+      <div class="form-floating">
+        <input type="name" class="form-control" id="name" placeholder="name" autocomplete="name" formControlName="name" aria-describedby="nameHelp">
+        <label for="name">Name</label>
+        @if (signUpForm.get('name')?.invalid && signUpForm.get('name')?.touched) {
+          <div id="nameHelp" class="form-text invalid">Name is required.</div>
+        }
+      </div>
+      <button type="submit" class="btn" [disabled]="signUpForm.invalid">Register</button>
+    </form>
+  </section>
+</main>
+<app-footer></app-footer>

@@ -3,4 +3,4 @@ export type ExceptionResponse = {
   status: number;
   error: string;
   detail: string;
-}
+};
