@@ -4,7 +4,7 @@ import { FooterComponent } from '../../components/footer/footer.component';
 import { AuthService } from '../../services/auth.service';
 import { AlertService } from '../../services/alert.service';
 import { User } from '../../models/user.model';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { Post } from '../../models/post.model';
 import { ProfileService } from '../../services/profile.service';
 import { Friendship } from '../../models/friendship.model';
@@ -12,7 +12,7 @@ import { PostComponent } from '../../components/post/post.component';
 
 @Component({
   selector: 'app-profile',
-  imports: [HeaderComponent, FooterComponent, PostComponent, RouterLink],
+  imports: [HeaderComponent, FooterComponent, PostComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
