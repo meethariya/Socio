@@ -35,12 +35,23 @@ export class LoginComponent {
     )return;
 
     let formData = new FormData();
-    formData.append('username', this.loginForm.value.username);
+    const username = this.loginForm.value.username;
+    formData.append('username', username);
     formData.append('password', this.loginForm.value.password);
 
     this.authService.login(formData).subscribe({
       next: (token: string) => {
         this.authService.setToken(token, this.loginForm.value.rememberMe == null ? false : this.loginForm.value.rememberMe);
+
+        // set user profile
+        this.authService.getUser(username, token).subscribe({
+          next: (user) => {this.authService.setUserProfile(user)},
+          error: (err) => {
+            const exception:ExceptionResponse = err.error;
+            this.alertService.pushAlert("danger",exception.detail);
+          }
+        });
+
         this.alertService.pushAlert("success","Successfully logged in");
         this.router.navigate(['/']);
       },

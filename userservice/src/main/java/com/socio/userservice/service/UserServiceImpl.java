@@ -54,13 +54,18 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public ResponseUserDto getUser(long id) {
-		return modelToResponse(repo.findById(id).orElseThrow(() -> new UserNotFoundException(id)));
+	public ResponseUserDto getUser(String username) {
+		return modelToResponse(repo.findByUsername(username).orElseThrow(() -> new UserNotFoundException("No user found with username: "+username)));
 	}
 
 	@Override
 	public List<ResponseUserDto> getUser() {
 		return repo.findAll().stream().map(this::modelToResponse).toList();
+	}
+	
+	@Override
+	public ResponseUserDto getUserByAuthId(long authId) {
+		return modelToResponse(repo.findByAuthId(authId).orElseThrow(() -> new UserNotFoundException("No user found with authId: "+authId)));
 	}
 
 	@Override
@@ -96,4 +101,5 @@ public class UserServiceImpl implements UserService {
 	private ResponseUserDto modelToResponse(User user) {
 		return modelMapper.map(user, ResponseUserDto.class);
 	}
+
 }

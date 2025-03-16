@@ -55,12 +55,13 @@ public class PostController {
 	}
 	
 	/**
-	 * Get all posts
+	 * Get all posts of user
+	 * @param userId {@link Long}
 	 * @return List of {@link ResponsePostDto}
 	 */
-	@GetMapping
-	public ResponseEntity<List<ResponsePostDto>> getPost(){
-		return new ResponseEntity<>(service.getPost(), HttpStatus.OK);
+	@GetMapping("/user/{userId}")
+	public ResponseEntity<List<ResponsePostDto>> getPost(@PathVariable("userId") long id){
+		return new ResponseEntity<>(service.getPost(id), HttpStatus.OK);
 	}
 	
 	/**

@@ -22,6 +22,8 @@ import com.socio.authservice.model.Auth;
 import com.socio.authservice.repository.AuthRepository;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -66,7 +68,7 @@ public class AuthServiceImpl implements AuthService {
 		if (!encoder.matches(request.getPassword(), details.getPassword())) {
 			throw new BadCredentialsException("Invalid username or password");
 		}
-		return generateToken(request.getUsername());
+		return generateToken(details.getId());
 	}
 
 	@Override
@@ -77,8 +79,9 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	@Override
-	public void validateToken(String token) {
-		Jwts.parser().verifyWith(getSignKey()).build().parseSignedClaims(token);
+	public long validateToken(String token) {
+		Jws<Claims> signedClaims = Jwts.parser().verifyWith(getSignKey()).build().parseSignedClaims(token);
+		return Long.valueOf(signedClaims.getPayload().getSubject());
 	}
 
 	@Override
@@ -97,8 +100,8 @@ public class AuthServiceImpl implements AuthService {
 				.orElseThrow(() -> new UsernameNotFoundException("No user found with username: " + username));
 	}
 
-	private String generateToken(String username) {
-		return Jwts.builder().subject(username).issuedAt(new Date())
+	private String generateToken(Long userId) {
+		return Jwts.builder().subject(userId.toString()).issuedAt(new Date())
 				.expiration(new Date(System.currentTimeMillis() + (12 * 60 * 60 * 1000))) // 12hrs
 				.signWith(getSignKey()).claim("role", "USER").compact();
 	}

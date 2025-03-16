@@ -2,11 +2,11 @@
   <section class="login-section">
     <form class="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
       <a routerLink="/">
-        <img src="favicon.ico" alt="Logo" height="48" width="48">
+        <img src="favicon.ico" alt="Logo" height="48" width="48" loading="lazy">
       </a>
       <h1>Login</h1>
       <div class="form-floating">
-        <input type="text" class="form-control" id="username" placeholder="Jhon Doe" autocomplete="username" formControlName="username" aria-describedby="usernameHelp">
+        <input type="text" class="form-control" id="username" placeholder="Jhon Doe" autocomplete="username" formControlName="username" aria-describedby="usernameHelp" autofocus>
         <label for="username">Username</label>
         @if (loginForm.get('username')?.invalid && loginForm.get('username')?.touched) {
           <div id="usernameHelp" class="form-text invalid">Username is required.</div>

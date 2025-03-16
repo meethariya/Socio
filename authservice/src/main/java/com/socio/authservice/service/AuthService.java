@@ -42,8 +42,9 @@ public interface AuthService extends UserDetailsService {
 	 * Validates the given JWT token, if invalid throws error
 	 * 
 	 * @param token
+	 * @return authId as string 
 	 */
-	void validateToken(String token);
+	long validateToken(String token);
 
 	/**
 	 * Delete auth details

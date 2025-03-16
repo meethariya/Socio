@@ -6,6 +6,7 @@ header{
   left: 0;
   background-color: var(--navy);
   z-index: 10;
+  overflow: hidden;
 }
 nav{
   width: 100%;
@@ -24,5 +25,9 @@ nav{
   color: var(--off-white);
 }
 .login, .logout{
-  background-color: var(--off-white);
+  background-color: var(--teal);
+}
+.user-profile{
+  color: var(--teal);
+  margin-right: 1rem;
 }

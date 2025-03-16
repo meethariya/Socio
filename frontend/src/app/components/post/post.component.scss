@@ -1,0 +1,62 @@
+@use '../../../variables' as vars;
+
+.post-card {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 0.5rem;
+  border: 2px solid var(--teal);
+  overflow: hidden;
+  padding: 1rem 0;
+  margin: auto;
+}
+.post-meta {
+  padding: 0 1rem;
+  display: flex;
+  align-items: start;
+  gap: 1.5rem;
+}
+.username {
+  margin-bottom: 0.25rem;
+}
+.image-container {
+  position: relative;
+}
+.post-image,.post-image-background  {
+  width: 100%;
+  height: 400px;
+  user-select: none;
+}
+.post-image-background {
+  object-fit: cover;
+  filter: blur(5px);
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+.post-image{
+  object-fit: contain;
+}
+.caption{
+  margin-top: 1rem;
+  padding: 0 1rem;
+}
+.post-cta {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 1rem;
+  button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    @media (max-width: vars.$bs-breakpoint-sm) {
+      flex-direction: column;
+    }
+    svg{
+      height: 24px;
+      width: 24px;
+    }
+  }
+}

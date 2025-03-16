@@ -16,9 +16,9 @@ import com.socio.userservice.model.FriendshipStatus;
  */
 public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
-	List<Friendship> findBySenderId(long senderId);
+	List<Friendship> findBySenderIdAndStatus(long senderId, FriendshipStatus status);
 
-	List<Friendship> findByReceiverId(long receiverId);
+	List<Friendship> findByReceiverIdAndStatus(long receiverId, FriendshipStatus status);
 	
 	List<Friendship> findBySenderIdAndStatusOrReceiverIdAndStatus(long senderId, FriendshipStatus status1, long receiverId, FriendshipStatus status2);
 	

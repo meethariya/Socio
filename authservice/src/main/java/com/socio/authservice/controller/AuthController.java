@@ -3,6 +3,9 @@
  */
 package com.socio.authservice.controller;
 
+import java.util.Collections;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -84,9 +87,8 @@ public class AuthController {
 	 * @param token
 	 */
 	@GetMapping("/validate-token")
-	@ResponseStatus(HttpStatus.OK)
-	public void validateToken(@RequestParam("token") String token) {
-		service.validateToken(token);
+	public ResponseEntity<Map<String, Long>> validateToken(@RequestParam("token") String token) {
+		return new ResponseEntity<>(Collections.singletonMap("authId", service.validateToken(token)), HttpStatus.OK);
 	}
 
 	/**

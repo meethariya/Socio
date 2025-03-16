@@ -40,8 +40,8 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<ResponsePostDto> getPost() {
-		return repo.findAll().stream().map(this::modelToResponse).toList();
+	public List<ResponsePostDto> getPost(long id) {
+		return repo.findByUserId(id).stream().map(this::modelToResponse).toList();
 	}
 
 	@Override

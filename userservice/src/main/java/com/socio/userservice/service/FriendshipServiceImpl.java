@@ -54,20 +54,20 @@ public class FriendshipServiceImpl implements FriendshipService {
 
 	@Override
 	public List<ResponseFriendshipDto> getAllFriendShipBySender(long senderId) {
-		return friendshipRepository.findBySenderId(senderId).stream().map(this::modelToResponse).toList();
+		return friendshipRepository.findBySenderIdAndStatus(senderId, FriendshipStatus.PENDING).stream().map(this::modelToResponse).toList();
 	}
 
 	@Override
 	public List<ResponseFriendshipDto> getAllFriendShipByReceiver(long receiverId) {
-		return friendshipRepository.findByReceiverId(receiverId).stream().map(this::modelToResponse).toList();
+		return friendshipRepository.findByReceiverIdAndStatus(receiverId, FriendshipStatus.PENDING).stream().map(this::modelToResponse).toList();
 	}
 
 	@Override
-	public List<ResponseFriendshipDto> getAllFriendsOfUser(long userId) {
+	public List<ResponseUserDto> getAllFriendsOfUser(long userId) {
 		return friendshipRepository
 				.findBySenderIdAndStatusOrReceiverIdAndStatus(userId, FriendshipStatus.ACCEPTED, userId, FriendshipStatus.ACCEPTED)
 				.stream()
-				.map(this::modelToResponse)
+				.map(friend -> modelToResponse(friend.getReceiver().getId()==userId ? friend.getSender() : friend.getReceiver()))
 				.toList();
 	}
 

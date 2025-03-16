@@ -1,0 +1,52 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { Post } from '../models/post.model';
+import { User } from '../models/user.model';
+import { Friendship } from '../models/friendship.model';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class ProfileService {
+  private baseUrl = 'http://localhost:8004';
+  private http = inject(HttpClient);
+  private router = inject(Router);
+
+  getPosts(id: number) {
+    const headers = this.headerGenerator();
+    if (headers == null) return;
+    return this.http.get<Array<Post>>(this.baseUrl + `/post/user/${id}`, {
+      headers: headers,
+    });
+  }
+
+  getFriends(id: number) {
+    const headers = this.headerGenerator();
+    if (headers == null) return;
+    return this.http.get<Array<User>>(
+      this.baseUrl + `/friend/friends-of-user/${id}`, {
+        headers: headers,
+      }
+    );
+  }
+
+  getFriendRequests(id: number) {
+    const headers = this.headerGenerator();
+    if (headers == null) return;
+    return this.http.get<Array<Friendship>>(
+      this.baseUrl + `/friend/request-received-by-user/${id}`, {
+        headers: headers,
+      }
+    );
+  }
+
+  private headerGenerator(): HttpHeaders | null {
+    const token = sessionStorage.getItem('token');
+    if (token == null) {
+      this.router.navigate(['/login']);
+      return null;
+    }
+    return new HttpHeaders({ Authorization: 'Bearer ' + token });
+  }
+}

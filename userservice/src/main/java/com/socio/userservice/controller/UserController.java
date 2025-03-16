@@ -44,13 +44,13 @@ public class UserController {
 	}
 
 	/**
-	 * Get User by Id
-	 * @param id {@link Long}
+	 * Get User by username
+	 * @param username {@link String}
 	 * @return {@link ResponseUserDto}
 	 */
-	@GetMapping("/{id}")
-	public ResponseEntity<ResponseUserDto> getUser(@PathVariable("id") long id) {
-		return new ResponseEntity<>(service.getUser(id), HttpStatus.OK);
+	@GetMapping("/{username}")
+	public ResponseEntity<ResponseUserDto> getUser(@PathVariable("username") String username) {
+		return new ResponseEntity<>(service.getUser(username), HttpStatus.OK);
 	}
 
 	/**
@@ -60,6 +60,16 @@ public class UserController {
 	@GetMapping
 	public ResponseEntity<List<ResponseUserDto>> getUser() {
 		return new ResponseEntity<>(service.getUser(), HttpStatus.OK);
+	}
+
+	/**
+	 * Get User by authId
+	 * @param authId {@link long}
+	 * @return {@link ResponseUserDto}
+	 */
+	@GetMapping("/auth-id/{id}")
+	public ResponseEntity<ResponseUserDto> getUser(@PathVariable("id") long authId) {
+		return new ResponseEntity<>(service.getUserByAuthId(authId), HttpStatus.OK);
 	}
 
 	/**

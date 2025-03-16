@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.socio.userservice.dto.RequestFriendshipDto;
 import com.socio.userservice.dto.ResponseFriendshipDto;
+import com.socio.userservice.dto.ResponseUserDto;
 import com.socio.userservice.model.FriendshipStatus;
 import com.socio.userservice.service.FriendshipService;
 
@@ -86,7 +87,7 @@ public class FriendshipController {
 	 * @return list of {@link ResponseFriendshipDto}
 	 */
 	@GetMapping("/friends-of-user/{id}")
-	public ResponseEntity<List<ResponseFriendshipDto>> getAllFriendsOfUser(@PathVariable("id") long userId) {
+	public ResponseEntity<List<ResponseUserDto>> getAllFriendsOfUser(@PathVariable("id") long userId) {
 		return new ResponseEntity<>(service.getAllFriendsOfUser(userId), HttpStatus.OK);
 	}
 

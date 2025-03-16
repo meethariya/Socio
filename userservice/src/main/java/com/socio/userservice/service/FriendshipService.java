@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.socio.userservice.dto.RequestFriendshipDto;
 import com.socio.userservice.dto.ResponseFriendshipDto;
+import com.socio.userservice.dto.ResponseUserDto;
 import com.socio.userservice.model.FriendshipStatus;
 
 /**
@@ -52,7 +53,7 @@ public interface FriendshipService {
 	 * @param senderId userId
 	 * @return list of {@link ResponseFriendshipDto}
 	 */
-	List<ResponseFriendshipDto> getAllFriendsOfUser(long userId);
+	List<ResponseUserDto> getAllFriendsOfUser(long userId);
 
 	/**
 	 * Update status of friendShip

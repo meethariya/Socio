@@ -15,5 +15,10 @@ export const routes: Routes = [
     path: 'sign-up',
     pathMatch: "full",
     loadComponent: async () => (await import('./pages/sign-up/sign-up.component')).SignUpComponent
+  },
+  {
+    path: 'profile',
+    pathMatch: "full",
+    loadComponent: async () => (await import('./pages/profile/profile.component')).ProfileComponent
   }
 ];

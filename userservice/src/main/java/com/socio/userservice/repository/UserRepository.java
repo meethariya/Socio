@@ -27,4 +27,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	 * @return optional of user
 	 */
 	Optional<User> findByUsername(String username);
+	
+	/**
+	 * Find user by auth id
+	 * @param authId credential id
+	 * @return optional of user
+	 */
+	Optional<User> findByAuthId(long authId);
 }

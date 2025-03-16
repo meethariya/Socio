@@ -28,10 +28,11 @@ public interface PostService {
 	ResponsePostDto getPost(String id);
 	
 	/**
-	 * Get all posts
+	 * Get all posts of user
+	 * @param id {@link Long}
 	 * @return List of {@link ResponsePostDto}
 	 */
-	List<ResponsePostDto> getPost();
+	List<ResponsePostDto> getPost(long id);
 	
 	/**
 	 * Update post details

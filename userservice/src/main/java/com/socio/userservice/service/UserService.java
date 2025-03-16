@@ -21,11 +21,18 @@ public interface UserService {
 	ResponseUserDto createUser(RequestUserDto user);
 
 	/**
-	 * Get User by Id
-	 * @param id {@link Long}
+	 * Get User by username
+	 * @param username {@link String}
 	 * @return {@link ResponseUserDto}
 	 */
-	ResponseUserDto getUser(long id);
+	ResponseUserDto getUser(String username);
+	
+	/**
+	 * Get User by auth id
+	 * @param authId {@link Long}
+	 * @return {@link ResponseUserDto}
+	 */
+	ResponseUserDto getUserByAuthId(long authId);
 
 	/**
 	 * Get all users
