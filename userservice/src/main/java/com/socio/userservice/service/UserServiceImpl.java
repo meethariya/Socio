@@ -81,7 +81,12 @@ public class UserServiceImpl implements UserService {
 		repo.deleteById(id);
 		authClient.deleteAuth(user2.getUsername());
 	}
-
+	
+	@Override
+	public List<ResponseUserDto> queryUsers(String query) {
+		return repo.findByUsernameContainingIgnoreCaseOrNameContainingIgnoreCaseOrEmailContainingIgnoreCase(query, query, query).stream().map(this::modelToResponse).toList();
+	}
+	
 	/**
 	 * Return model from request DTO
 	 * 

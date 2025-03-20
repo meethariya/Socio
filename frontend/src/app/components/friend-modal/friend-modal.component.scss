@@ -1,0 +1,29 @@
+@use '../../../_variables' as vars;
+
+.user-search-form {
+  position: relative;
+  width: 80%;
+  input {
+    border-radius: 30px;
+    padding-right: 36px;
+    &:focus {
+      border-color: var(--teal);
+      box-shadow: none;
+    }
+    &::-webkit-search-cancel-button {
+      -webkit-appearance: none;
+      display: none;
+    }
+  }
+  button {
+    position: absolute;
+    color: var(--teal);
+    right: 0;
+    top: calc(50% - 18px);
+    border: none;
+  }
+}
+.bg-orange{
+  background-color: var(--orange);
+  color: var(--off-white);
+}

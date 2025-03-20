@@ -3,6 +3,7 @@
  */
 package com.socio.userservice.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,4 +35,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	 * @return optional of user
 	 */
 	Optional<User> findByAuthId(long authId);
+
+	/**
+	 * Find Users by querying in username or name or email
+	 * @param username
+	 * @param name
+	 * @param email
+	 * @return list of relevant users
+	 */
+	List<User> findByUsernameContainingIgnoreCaseOrNameContainingIgnoreCaseOrEmailContainingIgnoreCase(String username, String name, String email);
 }

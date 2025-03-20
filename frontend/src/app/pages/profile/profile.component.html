@@ -23,10 +23,10 @@
               <h5>{{userFriends().length}}</h5>
               }
             </div>
-            <div class="col-4">
+            <div class="col-4" (click)="requestsClick()">
               <h4 class="user-info-labels request-label">Requests</h4>
               @if (friendRequests!=undefined) {
-              <h5>{{friendRequests().length}}</h5>
+              <h5>{{friendRequests.length}}</h5>
               }
             </div>
           </div>

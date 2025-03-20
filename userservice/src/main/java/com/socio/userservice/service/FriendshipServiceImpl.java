@@ -40,6 +40,8 @@ public class FriendshipServiceImpl implements FriendshipService {
 	public ResponseFriendshipDto createFriendShip(RequestFriendshipDto friendShip) {
 		long senderId = friendShip.getSenderId();
 		long receiverId = friendShip.getReceiverId();
+		if(senderId == receiverId)
+			throw new DuplicateFriendshipException("Invalid sender and receiver");
 		Optional<Friendship> optional = friendshipRepository.findBySenderIdAndReceiverIdOrSenderIdAndReceiverId(senderId, receiverId, receiverId, senderId);
 		optional.ifPresent(f->{
 			throw new DuplicateFriendshipException(f.getId());

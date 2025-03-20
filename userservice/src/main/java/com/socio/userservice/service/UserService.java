@@ -53,5 +53,12 @@ public interface UserService {
 	 * @param id {@link Long}
 	 */
 	void deleteUser(long id);
+	
+	/**
+	 * Search all users for its username, name and email
+	 * @param query search parameter
+	 * @return list of relevant users
+	 */
+	List<ResponseUserDto> queryUsers(String query);
 
 }

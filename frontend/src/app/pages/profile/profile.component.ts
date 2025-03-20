@@ -9,6 +9,7 @@ import { Post } from '../../models/post.model';
 import { ProfileService } from '../../services/profile.service';
 import { Friendship } from '../../models/friendship.model';
 import { PostComponent } from '../../components/post/post.component';
+import { FriendService } from '../../services/friend.service';
 
 @Component({
   selector: 'app-profile',
@@ -20,12 +21,13 @@ export class ProfileComponent implements OnInit {
   authService = inject(AuthService);
   alertService = inject(AlertService);
   profileService = inject(ProfileService);
+  friendService = inject(FriendService);
   router = inject(Router);
 
   userProfile!: Signal<User>;
   userPosts!: Signal<Array<Post>>;
   userFriends!: Signal<Array<User>>;
-  friendRequests!: Signal<Array<Friendship>>;
+  friendRequests!: Array<Friendship>;
 
   ngOnInit(): void {
     this.authService.getUserProfile().subscribe({
@@ -52,7 +54,7 @@ export class ProfileComponent implements OnInit {
 
         this.profileService.getFriendRequests(this.userProfile().id)?.subscribe({
           next: (requests) => {
-            this.friendRequests = signal(requests);
+            this.friendRequests = requests;
           },
           error: (err) => {
             this.alertService.pushAlert('danger', err.detail);
@@ -64,6 +66,14 @@ export class ProfileComponent implements OnInit {
         this.router.navigate(['/login']);
       },
     });
+  }
+
+  requestsClick() {
+    this.friendService.openModal(this.friendRequests.map(f => {
+      const other = f.sender;
+      other.isFriend=false;
+      return other}
+    ));
   }
 
   copyUsername() {

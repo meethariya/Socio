@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -92,5 +93,15 @@ public class UserController {
 	@ResponseStatus(HttpStatus.OK)
 	public void deleteUser(@PathVariable("id") long id) {
 		service.deleteUser(id);
+	}
+	
+	/**
+	 * Search users by username, name and email based on given query
+	 * @param query search query
+	 * @return list of {@link ResponseUserDto}
+	 */
+	@GetMapping("/query-user")
+	public ResponseEntity<List<ResponseUserDto>> queryUsers(@RequestParam("query") String query) {
+		return new ResponseEntity<>(service.queryUsers(query), HttpStatus.OK);
 	}
 }
