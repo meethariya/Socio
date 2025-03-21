@@ -27,7 +27,7 @@ export class ProfileComponent implements OnInit {
   userProfile!: Signal<User>;
   userPosts!: Signal<Array<Post>>;
   userFriends!: Signal<Array<User>>;
-  friendRequests!: Array<Friendship>;
+  friendRequests!: Signal<Array<Friendship>>;
 
   ngOnInit(): void {
     this.authService.getUserProfile().subscribe({
@@ -46,6 +46,9 @@ export class ProfileComponent implements OnInit {
         this.profileService.getFriends(this.userProfile().id)?.subscribe({
           next: (friends) => {
             this.userFriends = signal(friends);
+            this.userFriends().forEach(f => {
+              f.isFriend="FRIENDS";
+            });
           },
           error: (err) => {
             this.alertService.pushAlert('danger', err.detail);
@@ -54,7 +57,10 @@ export class ProfileComponent implements OnInit {
 
         this.profileService.getFriendRequests(this.userProfile().id)?.subscribe({
           next: (requests) => {
-            this.friendRequests = requests;
+            this.friendRequests = signal(requests);
+            this.friendRequests().forEach(f => {
+              f.sender.isFriend="REQUEST RECEIVED"
+            });
           },
           error: (err) => {
             this.alertService.pushAlert('danger', err.detail);
@@ -69,11 +75,26 @@ export class ProfileComponent implements OnInit {
   }
 
   requestsClick() {
-    this.friendService.openModal(this.friendRequests.map(f => {
-      const other = f.sender;
-      other.isFriend=false;
-      return other}
-    ));
+    if(this.friendRequests().length==0) return;
+    this.friendService.openModal(undefined,this.friendRequests()).result.then(
+      (result) => {},
+			(reason) => {
+        if(typeof(reason) == 'object') {
+          let friend = reason as User;
+          if(friend.isFriend=='FRIENDS') {
+            this.friendRequests = signal(this.friendRequests().filter(u => u.sender.id!=friend.id));
+            this.userFriends().push(friend);
+          } else if(friend.isFriend=='NOT FRIEND') {
+            this.friendRequests = signal(this.friendRequests().filter(u => u.sender.id!=friend.id));
+          }
+        }
+			},
+    );
+  }
+
+  friendsClick() {
+    if(this.userFriends().length==0) return;
+    this.friendService.openModal(this.userFriends());
   }
 
   copyUsername() {

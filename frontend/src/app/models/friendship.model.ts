@@ -1,9 +1,9 @@
 import { User } from './user.model';
 
 export enum FriendshipStatus {
-  PENDING,
-  ACCEPTED,
-  REJECTED,
+  PENDING = "PENDING",
+  ACCEPTED = "ACCEPTED",
+  REJECTED = "REJECTED",
 }
 export type Friendship = {
   id: number;

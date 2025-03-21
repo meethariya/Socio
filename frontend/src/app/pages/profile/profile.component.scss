@@ -38,6 +38,11 @@ section.user-profile-section {
     font-size: 1rem;
   }
 }
+.col-4:has(.request-label),.col-4:has(.friend-label){
+  &, h4, h5{
+    cursor: pointer;
+  }
+}
 
 .create-post{
   background-color: var(--orange);

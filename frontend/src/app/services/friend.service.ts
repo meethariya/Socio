@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { Friendship } from '../models/friendship.model';
+import { Friendship, FriendshipStatus } from '../models/friendship.model';
 import { User } from '../models/user.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FriendModalComponent } from '../components/friend-modal/friend-modal.component';
@@ -14,15 +14,21 @@ export class FriendService {
   private http = inject(HttpClient);
   modelService = inject(NgbModal);
 
-  openModal(friendList?: Array<User>){
+  openModal(friendList?: Array<User>, requestList?:Array<Friendship>){
+    const userSerachRequired = friendList || requestList ? false: true;
     const modal = this.modelService.open(FriendModalComponent,{
       scrollable: true,
       animation: true,
       backdropClass: "light-blue-backdrop"
     });
+    modal.componentInstance.userSerachRequired = userSerachRequired;
     if(friendList) {
       modal.componentInstance.inputFriendList = friendList;
     }
+    if(requestList) {
+      modal.componentInstance.friendRequests=requestList;
+    }
+    return modal;
   }
 
   searchUser(username: string): Observable<Array<User>> {
@@ -44,6 +50,14 @@ export class FriendService {
 
     const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
     return this.http.post<Friendship>(this.baseUrl+"/friend",formData,{headers:headers});
+  }
+
+  updateFriendship(friendshipId: number, status: FriendshipStatus) {
+    const token = this.getToken();
+    if (token == null) return throwError(() => new Error('No token found'));
+
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+    return this.http.put<Friendship>(this.baseUrl+`/friend/${friendshipId}`, status.toString(),{headers:headers});
   }
 
   getToken(): string | null {

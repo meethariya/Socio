@@ -4,5 +4,5 @@ export type User = {
   email: string;
   name: string;
   authId: number;
-  isFriend?:boolean;
+  isFriend?:'NOT FRIEND'|'REQUEST SENT'|'REQUEST RECEIVED'|'FRIENDS';
 };
