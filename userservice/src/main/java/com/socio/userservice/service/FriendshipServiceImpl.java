@@ -44,7 +44,12 @@ public class FriendshipServiceImpl implements FriendshipService {
 			throw new DuplicateFriendshipException("Invalid sender and receiver");
 		Optional<Friendship> optional = friendshipRepository.findBySenderIdAndReceiverIdOrSenderIdAndReceiverId(senderId, receiverId, receiverId, senderId);
 		optional.ifPresent(f->{
-			throw new DuplicateFriendshipException(f.getId());
+			if(f.getStatus()==FriendshipStatus.REJECTED) {
+				friendshipRepository.deleteById(f.getId());
+				friendshipRepository.flush();
+			} else {
+				throw new DuplicateFriendshipException(f.getId());				
+			}
 		});
 		return modelToResponse(friendshipRepository.save(requestToModel(friendShip)));
 	}
@@ -81,8 +86,8 @@ public class FriendshipServiceImpl implements FriendshipService {
 	}
 
 	@Override
-	public void deleteFriendShip(long id) {
-		friendshipRepository.deleteById(id);
+	public void deleteFriendShip(long senderId, long receiverId) {
+		friendshipRepository.deleteBySenderIdAndReceiverIdOrSenderIdAndReceiverId(senderId, receiverId, receiverId, senderId);
 	}
 	
 	/**

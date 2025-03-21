@@ -94,7 +94,17 @@ export class ProfileComponent implements OnInit {
 
   friendsClick() {
     if(this.userFriends().length==0) return;
-    this.friendService.openModal(this.userFriends());
+    this.friendService.openModal(this.userFriends()).result.then(
+      (results) => {},
+      (reason) => {
+        if(typeof(reason) == 'object') {
+          let formerFriend = reason as User;
+          if(formerFriend.isFriend=='NOT FRIEND') {
+            this.userFriends = signal(this.userFriends().filter(u => u.id!=formerFriend.id));
+          }
+        }
+      }
+    );
   }
 
   copyUsername() {

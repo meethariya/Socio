@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -109,9 +110,9 @@ public class FriendshipController {
 	 * 
 	 * @param id friendShipId
 	 */
-	@DeleteMapping("/{id}")
+	@DeleteMapping()
 	@ResponseStatus(HttpStatus.OK)
-	void deleteFriendShip(@PathVariable("id") long id) {
-		service.deleteFriendShip(id);
+	void deleteFriendShip(@RequestParam("senderId") long senderId, @RequestParam("receiverId") long receiverId) {
+		service.deleteFriendShip(senderId, receiverId);
 	}
 }

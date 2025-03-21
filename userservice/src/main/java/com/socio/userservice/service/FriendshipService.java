@@ -67,7 +67,8 @@ public interface FriendshipService {
 	/**
 	 * Delete a friendShip
 	 * 
-	 * @param id friendShipId
+	 * @param senderId user id who sent request
+	 * @param receiverId user id who got request
 	 */
-	void deleteFriendShip(long id);
+	void deleteFriendShip(long senderId, long receiverId);
 }

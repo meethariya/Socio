@@ -121,6 +121,29 @@ export class FriendModalComponent implements OnInit {
     });
   }
 
+  removeFriend(userId: number) {
+    this.authService.getUserProfile().subscribe({
+      next: (activeUser) =>{
+        this.friendService.deleteFriendship(userId, activeUser.id).subscribe({
+          next: () => {
+            const formerFriend = this.inputFriendList.find(u => u.id==userId);
+            if(formerFriend) {
+              formerFriend.isFriend = "NOT FRIEND";
+              this.alertService.pushAlert("success", formerFriend.name+" removed from your friend list");
+              this.activeModal.dismiss(formerFriend);
+            }
+          },
+          error: (err) => {
+            this.alertService.pushAlert("danger", err.error.detail);
+          }
+        });
+      },
+      error: (err) => {
+        this.alertService.pushAlert("danger", err.error.detail);
+      }
+    });
+  }
+
   approveRequest(senderId: number) {
     this.manageRequest(senderId, FriendshipStatus.ACCEPTED);
   }

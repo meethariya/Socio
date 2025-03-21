@@ -60,6 +60,18 @@ export class FriendService {
     return this.http.put<Friendship>(this.baseUrl+`/friend/${friendshipId}`, status.toString(),{headers:headers});
   }
 
+  deleteFriendship(senderId: number, receiverId:number) {
+    const token = this.getToken();
+    if (token == null) return throwError(() => new Error('No token found'));
+
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+    const params = new HttpParams().set('senderId', senderId).set("receiverId",receiverId);
+    return this.http.delete<null>(this.baseUrl+`/friend`, {
+      params: params,
+      headers: headers
+    });
+  }
+
   getToken(): string | null {
     return sessionStorage.getItem('token');
   }
