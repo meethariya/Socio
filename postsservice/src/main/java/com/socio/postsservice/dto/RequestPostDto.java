@@ -3,6 +3,8 @@
  */
 package com.socio.postsservice.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 /**
@@ -12,6 +14,6 @@ import lombok.Data;
 public class RequestPostDto {
 	private String caption;
 	private long userId;
-	private String imageUrl;
+	private MultipartFile image;
 	private String location;
 }

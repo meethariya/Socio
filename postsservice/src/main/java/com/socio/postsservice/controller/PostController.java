@@ -3,6 +3,7 @@
  */
 package com.socio.postsservice.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -38,9 +39,10 @@ public class PostController {
 	 * Create a post
 	 * @param user {@link RequestPostDto}
 	 * @return {@link ResponsePostDto}
+	 * @throws IOException in case saving image fails
 	 */
 	@PostMapping
-	public ResponseEntity<ResponsePostDto> createPost(@ModelAttribute RequestPostDto post){
+	public ResponseEntity<ResponsePostDto> createPost(@ModelAttribute RequestPostDto post) throws IOException{
 		return new ResponseEntity<>(service.createPost(post), HttpStatus.CREATED);
 	}
 	
@@ -78,10 +80,11 @@ public class PostController {
 	/**
 	 * Delete post
 	 * @param id {@link String}
+	 * @throws IOException 
 	 */
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public void deletePost(@PathVariable("id") String id){
+	public void deletePost(@PathVariable("id") String id) throws IOException{
 		service.deletePost(id);
 	}
 }

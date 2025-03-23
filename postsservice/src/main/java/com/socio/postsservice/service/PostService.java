@@ -3,6 +3,7 @@
  */
 package com.socio.postsservice.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.socio.postsservice.dto.RequestPostDto;
@@ -17,8 +18,9 @@ public interface PostService {
 	 * Create a post
 	 * @param user {@link RequestPostDto}
 	 * @return {@link ResponsePostDto}
+	 * @throws IOException in case saving image fails
 	 */
-	ResponsePostDto createPost(RequestPostDto post);
+	ResponsePostDto createPost(RequestPostDto post) throws IOException;
 	
 	/**
 	 * Get Post by Id
@@ -45,6 +47,7 @@ public interface PostService {
 	/**
 	 * Delete post
 	 * @param id {@link String}
+	 * @throws IOException in case deletion of image fails 
 	 */
-	void deletePost(String id);
+	void deletePost(String id) throws IOException;
 }

@@ -66,4 +66,10 @@ export class AuthService {
         })
       );
   }
+
+
+  public get url() : string {
+    return this.baseUrl;
+  }
+
 }

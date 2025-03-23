@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.socio.postsservice.dto.ExceptionResponse;
+import com.socio.postsservice.exception.InvalidInputException;
 import com.socio.postsservice.exception.PostNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,17 @@ public class ExceptionHandlerController {
 	public ResponseEntity<ExceptionResponse> handlePostNotFoundException(PostNotFoundException e) {
 		log.error(e.getMessage());
 		return new ResponseEntity<>(responseGenerator((short)404, "Post not found", e.getMessage()), HttpStatus.NOT_FOUND);
+	}
+
+	/**
+	 * Exception handler for Invalid User Input
+	 * @param e {@link PostNotFoundException}
+	 * @return {@link ExceptionResponse} with status 422
+	 */
+	@ExceptionHandler(InvalidInputException.class)
+	public ResponseEntity<ExceptionResponse> handleInvalidInputException(InvalidInputException e) {
+		log.error(e.getMessage());
+		return new ResponseEntity<>(responseGenerator((short)422, "Invalid User Input", e.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 	
 	/**

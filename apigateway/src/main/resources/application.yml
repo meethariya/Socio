@@ -23,7 +23,7 @@ spring:
         - id: postsservice
           uri: 'lb://postsservice'
           predicates:
-            - Path=/post/**
+            - 'Path=/post/**, /uploads/**'
       globalcors:
         cors-configurations:
           '[/**]':

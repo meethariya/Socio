@@ -111,7 +111,8 @@ public class JwtFilter implements GlobalFilter, Ordered{
 		return (
 				path.equals("/user") && method.equals("POST") ||
 				path.equals("/auth/generate-token") && method.equals("POST")  ||
-				path.equals("/auth/validate-token") && method.equals("GET")
+				path.equals("/auth/validate-token") && method.equals("GET")  ||
+				path.startsWith("/uploads/") && method.equals("GET")
 		);
 	};
 	
