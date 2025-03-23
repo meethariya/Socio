@@ -14,12 +14,21 @@
   display: flex;
   align-items: start;
   gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+.location{
+  margin-bottom: 0;
+  min-height: 24px;
 }
 .username {
   margin-bottom: 0.25rem;
 }
 .image-container {
   position: relative;
+  height: 400px;
+  &.placeholder{
+    background-color: #868e96;
+  }
 }
 .post-image,.post-image-background  {
   width: 100%;
@@ -31,10 +40,15 @@
   filter: blur(5px);
   position: absolute;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
 }
 .post-image{
   object-fit: contain;
+  position: relative;
+  z-index: 1;
+  &.covered{
+    object-fit: cover;
+  }
 }
 .caption{
   margin-top: 1rem;
@@ -51,12 +65,13 @@
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
-    @media (max-width: vars.$bs-breakpoint-sm) {
-      flex-direction: column;
-    }
+    border: none;
     svg{
       height: 24px;
       width: 24px;
+    }
+    @media (max-width: vars.$bs-breakpoint-sm) {
+      flex-direction: column;
     }
   }
 }

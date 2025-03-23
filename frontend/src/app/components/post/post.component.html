@@ -3,14 +3,35 @@
     <img src="user-circle.png" alt="{{username()}}" class="profile-picture" loading="lazy" height="36" width="36">
     <div>
       <h5 class="username">{{username()}}</h5>
-      <p class="location text-muted"><i>{{post().location}}</i></p>
+      @if (post().location==null || post().location.length > 0) {
+        <p class="location text-muted"><i>{{post().location}}</i></p>
+      }
+      @else {
+        <p class="location text-muted placeholder-glow col-8"><span class="placeholder w-100 rounded-2"></span></p>
+      }
     </div>
   </div>
-  <div class="image-container">
-    <img src="{{authService.url+post().imageUrl}}" alt="post-{{post().id}}" loading="lazy" class="post-image-background">
-    <img src="{{authService.url+post().imageUrl}}" alt="post-{{post().id}}" loading="lazy" class="post-image">
-  </div>
-  <p class="caption"><b>{{username()+" "}}</b>{{post().caption}}</p>
+  @if (post().imageUrl.length) {
+    <div class="image-container">
+      @if (post().needBlurBackground) {
+        <img src="{{(post().imageUrl.includes('uploads') ? authService.url:'') + post().imageUrl}}" alt="post-{{post().id}}" loading="lazy" class="post-image-background">
+      }
+      <img src="{{(post().imageUrl.includes('uploads') ? authService.url:'') + post().imageUrl}}" alt="post-{{post().id}}" loading="lazy" [class]="post().covered ? 'covered post-image' : 'post-image'">
+    </div>
+  }@else {
+    <div class="image-container placeholder"></div>
+  }
+  <p class="caption placeholder-glow">
+    <b>{{username()+" "}}</b>
+    @if (post().caption) {
+      @if (post().caption.length) {
+        <span>{{post().caption}}</span>
+      }
+      @else {
+        <span class="placeholder col-6 rounded-2"></span>
+      }
+    }
+  </p>
   <div class="post-cta">
     <button class="btn like">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -1,0 +1,79 @@
+.create-post-section{
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.post-form{
+  padding: 1.5rem;
+  background-color: var(--teal);
+  border-radius: 0.5rem;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  input:focus{
+    border-color: var(--orange);
+    box-shadow: 0 0 0 0.25rem #dda85363;
+  }
+}
+
+.image-upload-group{
+  width: 100%;
+  height: 200px;
+  label{
+    height: 100%;
+    width: 100%;
+    color: var(--orange);
+    border: 3px dotted currentColor;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: white;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    &.drag-enter{
+      color: var(--navy);
+    }
+    svg{
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.form-switch input{
+  &:focus:not(:checked){
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='rgba%28221, 168, 83, 1%29'/></svg>");
+  }
+  &:checked{
+    background-color: var(--orange);
+    border-color: var(--orange);
+  }
+}
+
+.upload{
+  border-radius: 30px;
+  width: fit-content;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  align-self: center;
+  &, &:active{
+    border-color: var(--orange);
+    background-color: var(--orange);
+    color: var(--off-white);
+  }
+}
+
+.preview{
+  padding: 1.5rem;
+  background-color: var(--beige);
+  border-radius: 0.5rem;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}

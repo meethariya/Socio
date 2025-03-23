@@ -4,4 +4,6 @@ export type Post = {
   userId: number;
   imageUrl: string;
   location: string;
+  covered: boolean;
+  needBlurBackground: boolean;
 };

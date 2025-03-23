@@ -15,4 +15,6 @@ public class ResponsePostDto {
 	private long userId;
 	private String imageUrl;
 	private String location;
+	private boolean covered;
+	private boolean needBlurBackground;
 }

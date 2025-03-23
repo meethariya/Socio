@@ -16,4 +16,6 @@ public class RequestPostDto {
 	private long userId;
 	private MultipartFile image;
 	private String location;
+	private boolean covered;
+	private boolean needBlurBackground;
 }

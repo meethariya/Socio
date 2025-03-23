@@ -20,5 +20,10 @@ export const routes: Routes = [
     path: 'profile',
     pathMatch: "full",
     loadComponent: async () => (await import('./pages/profile/profile.component')).ProfileComponent
+  },
+  {
+    path: 'create-post',
+    pathMatch: "full",
+    loadComponent: async () => (await import('./pages/create-post/create-post.component')).CreatePostComponent
   }
 ];
