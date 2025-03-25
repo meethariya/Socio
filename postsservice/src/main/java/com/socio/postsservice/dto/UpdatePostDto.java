@@ -1,23 +1,18 @@
 /**
- * 04-Mar-2025
+ * 24-Mar-2025
  */
 package com.socio.postsservice.dto;
-
-import java.util.Date;
 
 import lombok.Data;
 
 /**
- * Response DTO for Post Model
+ * Request DTO to update the post
  */
 @Data
-public class ResponsePostDto {
-	private String id;
+public class UpdatePostDto {
+
 	private String caption;
-	private long userId;
-	private String imageUrl;
 	private String location;
 	private boolean covered;
 	private boolean needBlurBackground;
-	private Date timestamp;
 }

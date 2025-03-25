@@ -14,5 +14,5 @@ import com.socio.postsservice.model.Post;
  */
 public interface PostRepository extends MongoRepository<Post, String> {
 
-	List<Post> findByUserId(long userId);
+	List<Post> findByUserIdOrderByTimestampDesc(long userId);
 }

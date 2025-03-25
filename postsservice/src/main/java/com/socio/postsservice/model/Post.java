@@ -3,6 +3,8 @@
  */
 package com.socio.postsservice.model;
 
+import java.util.Date;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
@@ -23,4 +25,5 @@ public class Post {
 	private String location;
 	private boolean covered;
 	private boolean needBlurBackground;
+	private Date timestamp;
 }

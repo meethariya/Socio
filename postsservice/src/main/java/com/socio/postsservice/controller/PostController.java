@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.socio.postsservice.dto.RequestPostDto;
 import com.socio.postsservice.dto.ResponsePostDto;
+import com.socio.postsservice.dto.UpdatePostDto;
 import com.socio.postsservice.service.PostService;
 
 /**
@@ -73,7 +74,7 @@ public class PostController {
 	 * @return {@link ResponsePostDto}
 	 */
 	@PutMapping("/{id}")
-	public ResponseEntity<ResponsePostDto> updatePost(@ModelAttribute RequestPostDto post,@PathVariable("id") String id){
+	public ResponseEntity<ResponsePostDto> updatePost(@ModelAttribute UpdatePostDto post,@PathVariable("id") String id){
 		return new ResponseEntity<>(service.updatePost(post, id), HttpStatus.OK);
 	}
 	

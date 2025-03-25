@@ -22,8 +22,13 @@ export const routes: Routes = [
     loadComponent: async () => (await import('./pages/profile/profile.component')).ProfileComponent
   },
   {
-    path: 'create-post',
+    path: 'post-editor',
     pathMatch: "full",
-    loadComponent: async () => (await import('./pages/create-post/create-post.component')).CreatePostComponent
+    loadComponent: async () => (await import('./pages/post-editor/post-editor.component')).PostEditorComponent
+  },
+  {
+    path: 'post-editor/:id',
+    pathMatch: "full",
+    loadComponent: async () => (await import('./pages/post-editor/post-editor.component')).PostEditorComponent
   }
 ];

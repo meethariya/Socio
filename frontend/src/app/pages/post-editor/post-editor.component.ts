@@ -20,29 +20,41 @@ import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 import { AlertService } from '../../services/alert.service';
 import { PostService } from '../../services/post.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ExceptionResponse } from '../../models/exception-response.model';
 
 @Component({
-  selector: 'app-create-post',
+  selector: 'app-post-editor',
   imports: [
     HeaderComponent,
     FooterComponent,
     ReactiveFormsModule,
     PostComponent,
   ],
-  templateUrl: './create-post.component.html',
-  styleUrl: './create-post.component.scss',
+  templateUrl: './post-editor.component.html',
+  styleUrl: './post-editor.component.scss',
 })
-export class CreatePostComponent implements OnInit {
+export class PostEditorComponent implements OnInit {
   authService = inject(AuthService);
   alertService = inject(AlertService);
   postService = inject(PostService);
   router = inject(Router);
+  activeRoute = inject(ActivatedRoute);
 
   imageLabelText = signal('Drag and drop your image or browse');
+  isUpdate = false;
   backgroundImage: string | null = null;
   imageFile: File | null = null;
-  post: Post;
+  post: Post = {
+    id: '0',
+    caption: '',
+    location: '',
+    imageUrl: '',
+    userId: 1,
+    covered: false,
+    needBlurBackground: false,
+    timestamp: new Date()
+  };
   user!: User;
 
   @ViewChild('imageLabel') imageLabel!: ElementRef;
@@ -56,35 +68,54 @@ export class CreatePostComponent implements OnInit {
     needBlurBackground: new FormControl(false),
   });
 
-  constructor() {
+  ngOnInit(): void {
     this.authService.getUserProfile().subscribe({
       next: (user) => {
         this.user = user;
+
+        this.activeRoute.paramMap.subscribe(params=>{
+          const postId = params.get("id");
+          if(postId) {
+            this.postService.getPostById(postId).subscribe({
+              next: (post) => {
+                if(post.userId != this.user.id){
+                  this.alertService.pushAlert("danger","You are not owner of this post");
+                  return;
+                }
+                this.isUpdate = true;
+
+                this.post = post;
+                this.postForm.patchValue({
+                  caption: post.caption,
+                  location: post.location,
+                  covered: post.covered,
+                  needBlurBackground: post.needBlurBackground,
+                });
+                this.postForm.controls['image'].disable();
+
+                this.backgroundImage = post.imageUrl;
+                this.postForm.updateValueAndValidity();
+              },
+            });
+          }
+        });
+
       },
       error: (err) => {
         this.alertService.pushAlert('danger', err.error.detail);
       },
     });
-    this.post = {
-      id: '0',
-      caption: '',
-      location: '',
-      imageUrl: '',
-      userId: 1,
-      covered: false,
-      needBlurBackground: false
-    };
-  }
-  ngOnInit(): void {
+
     this.postForm.valueChanges.subscribe((value) => {
       this.post = {
-        id: '0',
+        id: this.post.id,
         caption: value.caption ?? '',
         location: value.location ?? '',
         imageUrl: this.backgroundImage??'',
         userId: this.user.id,
         covered: value.covered ?? false,
-        needBlurBackground: value.needBlurBackground ?? false
+        needBlurBackground: value.needBlurBackground ?? false,
+        timestamp: new Date()
       };
     });
   }
@@ -108,11 +139,11 @@ export class CreatePostComponent implements OnInit {
 
     if (event.dataTransfer) {
       this.imageInput.nativeElement.files = event.dataTransfer.files;
-      this.uploadImage(event);
+      this.uploadImage();
     }
   }
 
-  uploadImage(event: Event) {
+  uploadImage() {
     if (this.imageInput.nativeElement.files && this.imageInput.nativeElement.files.length > 0) {
       const file = this.imageInput.nativeElement.files[0];
 
@@ -153,6 +184,32 @@ export class CreatePostComponent implements OnInit {
       },
       error: (err) => {
         this.alertService.pushAlert("danger", err.error.detail);
+      }
+    });
+  }
+
+  updatePost(){
+    var formData = new FormData();
+
+    if(this.postForm.value.caption != null) {
+      formData.append("caption",this.postForm.value.caption);
+    }
+
+    if(this.postForm.value.location != null) {
+      formData.append("location",this.postForm.value.location);
+    }
+
+    formData.append("covered", (this.postForm.value.covered??false).toString());
+    formData.append("needBlurBackground", (this.postForm.value.needBlurBackground??false).toString());
+
+    this.postService.updatePost(this.post.id, formData).subscribe({
+      next: (post) => {
+        this.alertService.pushAlert("success", "Post updated successfully");
+        this.router.navigate(["/profile"]);
+      },
+      error: (err) => {
+        const error = err.error as ExceptionResponse;
+        this.alertService.pushAlert("danger", error.detail);
       }
     });
   }

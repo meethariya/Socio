@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Date;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -19,6 +20,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.socio.postsservice.dto.RequestPostDto;
 import com.socio.postsservice.dto.ResponsePostDto;
+import com.socio.postsservice.dto.UpdatePostDto;
 import com.socio.postsservice.exception.InvalidInputException;
 import com.socio.postsservice.exception.PostNotFoundException;
 import com.socio.postsservice.model.Post;
@@ -84,15 +86,25 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public List<ResponsePostDto> getPost(long id) {
-		return repo.findByUserId(id).stream().map(this::modelToResponse).toList();
+		return repo.findByUserIdOrderByTimestampDesc(id).stream().map(this::modelToResponse).toList();
 	}
 
 	@Override
-	public ResponsePostDto updatePost(RequestPostDto post, String id) {
+	public ResponsePostDto updatePost(UpdatePostDto post, String id) {
 		Post postById = repo.findById(id).orElseThrow(() -> new PostNotFoundException(id));
-		Post requestToModel = requestToModel(post);
-		requestToModel.setId(postById.getId());
-		return modelToResponse(repo.save(requestToModel));
+		
+		if(post.getCaption()!=null) {
+			postById.setCaption(post.getCaption());
+		}
+		
+		if(post.getLocation()!=null) {
+			postById.setLocation(post.getLocation());
+		}
+		
+		postById.setCovered(post.isCovered());
+		postById.setNeedBlurBackground(post.isNeedBlurBackground());
+		
+		return modelToResponse(repo.save(postById));
 	}
 
 	@Override
@@ -103,7 +115,9 @@ public class PostServiceImpl implements PostService {
 	}
 
 	private Post requestToModel(RequestPostDto postDto) {
-		return modelMapper.map(postDto, Post.class);
+		Post post = modelMapper.map(postDto, Post.class);
+		post.setTimestamp(new Date(System.currentTimeMillis()));
+		return post;
 	}
 
 	private ResponsePostDto modelToResponse(Post post) {

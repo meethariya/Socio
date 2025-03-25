@@ -6,4 +6,5 @@ export type Post = {
   location: string;
   covered: boolean;
   needBlurBackground: boolean;
+  timestamp: Date
 };

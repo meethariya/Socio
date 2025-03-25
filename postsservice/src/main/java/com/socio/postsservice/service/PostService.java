@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.socio.postsservice.dto.RequestPostDto;
 import com.socio.postsservice.dto.ResponsePostDto;
+import com.socio.postsservice.dto.UpdatePostDto;
 
 /**
  * Service layer for Post
@@ -38,11 +39,11 @@ public interface PostService {
 	
 	/**
 	 * Update post details
-	 * @param user {@link RequestPostDto}
+	 * @param user {@link UpdatePostDto}
 	 * @param id {@link String}
 	 * @return {@link ResponsePostDto}
 	 */
-	ResponsePostDto updatePost(RequestPostDto post, String id);
+	ResponsePostDto updatePost(UpdatePostDto post, String id);
 	
 	/**
 	 * Delete post

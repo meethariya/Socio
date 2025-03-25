@@ -111,4 +111,8 @@ export class ProfileComponent implements OnInit {
     navigator.clipboard.writeText(`@${this.userProfile().username}`);
     this.alertService.pushAlert('info', 'Username copied to clipboard');
   }
+
+  postDelete(post: Post) {
+    this.userPosts = signal(this.userPosts().filter(p => p.id!=post.id));
+  }
 }

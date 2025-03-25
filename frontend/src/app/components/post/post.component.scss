@@ -8,13 +8,29 @@
   overflow: hidden;
   padding: 1rem 0;
   margin: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  &.show-overlay .edit-overlay{
+    right:0;
+  }
+  --image-height: 400px;
+  @media (max-width: vars.$bs-breakpoint-sm) {
+    --image-height: 300px;
+  }
 }
 .post-meta {
   padding: 0 1rem;
   display: flex;
   align-items: start;
   gap: 1.5rem;
-  margin-bottom: 1rem;
+  .more{
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    cursor: pointer;
+  }
 }
 .location{
   margin-bottom: 0;
@@ -25,14 +41,14 @@
 }
 .image-container {
   position: relative;
-  height: 400px;
+  height: var(--image-height);
   &.placeholder{
     background-color: #868e96;
   }
 }
 .post-image,.post-image-background  {
   width: 100%;
-  height: 400px;
+  height: var(--image-height);
   user-select: none;
 }
 .post-image-background {
@@ -51,7 +67,7 @@
   }
 }
 .caption{
-  margin-top: 1rem;
+  margin: 0;
   padding: 0 1rem;
 }
 .post-cta {
@@ -72,6 +88,58 @@
     }
     @media (max-width: vars.$bs-breakpoint-sm) {
       flex-direction: column;
+      gap: 0;
+      padding: 0;
+    }
+  }
+}
+.edit-overlay{
+  position: absolute;
+  top: 0;
+  right: -100%;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.4rem;
+  z-index: 2;
+  transition: right 500ms ease-in-out;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 1rem;
+  padding: 1rem;
+  .overlay-bg{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--jet-black);
+    opacity: 0.7;
+  }
+  .close,.edit, .delete{
+    display: flex;
+    border-radius: 30px;
+    padding: 0.5rem;
+    color: var(--off-white);
+    cursor: pointer;
+    border: 1px solid var(--off-white);
+    position: relative;
+    z-index: 2;
+    span{
+      overflow: hidden;
+      transition: max-width 250ms ease-in-out,margin 250ms ease-in-out;
+      @media (pointer: fine) {
+        max-width: 0;
+      }
+      @media (pointer: coarse) {
+        margin-left: 0.5rem;
+        max-width: 50px;
+      }
+    }
+    @media (pointer: fine) {
+      &:hover span{
+        margin-left: 0.5rem;
+        max-width: 50px;
+      }
     }
   }
 }

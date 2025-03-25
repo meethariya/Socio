@@ -9,21 +9,21 @@
         </div>
         <div class="col-8 mt-2">
           <h2 class="name">{{userProfile().name}}</h2>
-          <h6 class="username" (click)="copyUsername()">{{"@"+userProfile().username}}</h6>
+          <h6 class="username" (click)="copyUsername()" title="click to copy">{{"@"+userProfile().username}}</h6>
           <div class="row mt-4">
-            <div class="col-4">
+            <div class="col-4" title="Total posts">
               <h4 class="user-info-labels post-label">Posts</h4>
               @if (userPosts!=undefined) {
               <h5>{{userPosts().length}}</h5>
               }
             </div>
-            <div class="col-4" (click)="friendsClick()">
+            <div class="col-4" (click)="friendsClick()" title="All friends">
               <h4 class="user-info-labels friend-label">Friends</h4>
               @if (userFriends!=undefined) {
               <h5>{{userFriends().length}}</h5>
               }
             </div>
-            <div class="col-4" (click)="requestsClick()">
+            <div class="col-4" (click)="requestsClick()" title="Pending Friend requests">
               <h4 class="user-info-labels request-label">Requests</h4>
               @if (friendRequests!=undefined) {
               <h5>{{friendRequests().length}}</h5>
@@ -39,14 +39,14 @@
       <div class="row">
         <div class="col-12 d-flex flex-direction-column justify-content-between align-items-center mb-3">
           <h2>Your Posts</h2>
-          <button class="create-post btn" routerLink="/create-post">Create new post</button>
+          <button class="create-post btn" routerLink="/post-editor" title="New post">Create new post</button>
         </div>
       </div>
       @if (userPosts!=undefined) {
       <div class="row">
         @for (post of userPosts(); track post.id) {
         <div class="col-12 col-md-6 mb-3">
-          <app-post [post]="post" [username]="userProfile().username"></app-post>
+          <app-post [post]="post" [username]="userProfile().username" [canEdit]="true" (postDelete)="postDelete($event)"></app-post>
         </div>
         }
       </div>

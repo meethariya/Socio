@@ -23,6 +23,39 @@ export class PostService {
     return this.http.post<Post>(this.baseUrl+"/post",formData,{headers:headers});
   }
 
+  deletePost(id: string) {
+    const token = this.getToken();
+    if (token == null){
+      this.router.navigate(['/login']);
+      return throwError(() => new Error('No token found'));
+    }
+
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+    return this.http.delete<null>(this.baseUrl+`/post/${id}`,{headers:headers});
+  }
+
+  getPostById(id: string) {
+    const token = this.getToken();
+    if (token == null){
+      this.router.navigate(['/login']);
+      return throwError(() => new Error('No token found'));
+    }
+
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+    return this.http.get<Post>(this.baseUrl+`/post/${id}`,{headers:headers});
+  }
+
+  updatePost(id: string, formData: FormData) {
+    const token = this.getToken();
+    if (token == null){
+      this.router.navigate(['/login']);
+      return throwError(() => new Error('No token found'));
+    }
+
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+    return this.http.put<Post>(this.baseUrl+`/post/${id}`,formData,{headers:headers});
+  }
+
   getToken(): string | null {
     return sessionStorage.getItem('token');
   }
