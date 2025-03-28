@@ -33,9 +33,10 @@ public interface PostService {
 	/**
 	 * Get all posts of user
 	 * @param id {@link Long}
+	 * @param visitorId null or {@link Long}  
 	 * @return List of {@link ResponsePostDto}
 	 */
-	List<ResponsePostDto> getPost(long id);
+	List<ResponsePostDto> getPost(long id, Object visitorId);
 	
 	/**
 	 * Update post details

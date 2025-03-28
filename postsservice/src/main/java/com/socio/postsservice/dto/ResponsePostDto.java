@@ -20,4 +20,7 @@ public class ResponsePostDto {
 	private boolean covered;
 	private boolean needBlurBackground;
 	private Date timestamp;
+	
+	private long likeCount;
+	private boolean likedByVisitor;
 }

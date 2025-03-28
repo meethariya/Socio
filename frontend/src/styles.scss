@@ -38,25 +38,3 @@ body:has(footer) main {
 .invalid{
   color: var(--bs-form-invalid-color);
 }
-.loader {
-  --r1: 154%;
-  --r2: 68.5%;
-  width: 60px;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  color: var(--navy);
-  background:
-    radial-gradient(var(--r1) var(--r2) at top   ,#0000 79.5%,currentColor 80%),
-    radial-gradient(var(--r1) var(--r2) at bottom,currentColor 79.5%,#0000 80%),
-    radial-gradient(var(--r1) var(--r2) at top   ,#0000 79.5%,currentColor 80%),
-    #ccc;
-  background-size: 50.5% 220%;
-  background-position: -100% 0%,0% 0%,100% 0%;
-  background-repeat:no-repeat;
-  animation: loading 2s infinite linear;
-}
-@keyframes loading {
-    33%  {background-position:    0% 33% ,100% 33% ,200% 33% }
-    66%  {background-position: -100%  66%,0%   66% ,100% 66% }
-    100% {background-position:    0% 100%,100% 100%,200% 100%}
-}

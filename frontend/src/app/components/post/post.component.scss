@@ -66,9 +66,23 @@
     object-fit: cover;
   }
 }
-.caption{
-  margin: 0;
+.post-details{
   padding: 0 1rem;
+  .caption{
+    margin: 0;
+  }
+  .data{
+    display: flex;
+    gap: 0.25rem;
+    span{
+      font-family: var(--font-lora);
+      position: relative;
+      &:not(:last-child)::after{
+        content: '•';
+        margin-left: 0.25rem;
+      }
+    }
+  }
 }
 .post-cta {
   display: flex;
@@ -85,6 +99,10 @@
     svg{
       height: 24px;
       width: 24px;
+    }
+    &.like.red svg{
+      color: #E55451;
+      fill: #E55451;
     }
     @media (max-width: vars.$bs-breakpoint-sm) {
       flex-direction: column;

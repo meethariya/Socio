@@ -56,6 +56,21 @@ export class PostService {
     return this.http.put<Post>(this.baseUrl+`/post/${id}`,formData,{headers:headers});
   }
 
+  likeUnlikePost(formData: FormData, like:boolean) {
+    const token = this.getToken();
+    if (token == null){
+      this.router.navigate(['/login']);
+      return throwError(() => new Error('No token found'));
+    }
+
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+    if(like) {
+      return this.http.post<null>(this.baseUrl+"/like",formData,{headers:headers});
+    } else {
+      return this.http.delete<null>(this.baseUrl+"/like",{headers:headers, body:formData});
+    }
+  }
+
   getToken(): string | null {
     return sessionStorage.getItem('token');
   }

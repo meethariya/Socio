@@ -34,7 +34,7 @@ export class ProfileComponent implements OnInit {
       next: (user) => {
         this.userProfile = signal(user);
 
-        this.profileService.getPosts(this.userProfile().id)?.subscribe({
+        this.profileService.getPosts(this.userProfile().id, this.userProfile().id)?.subscribe({
           next: (posts) => {
             this.userPosts = signal(posts);
           },

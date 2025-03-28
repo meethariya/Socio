@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Post } from '../models/post.model';
@@ -13,11 +13,16 @@ export class ProfileService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  getPosts(id: number) {
+  getPosts(id: number, visitorId?:number) {
     const headers = this.headerGenerator();
     if (headers == null) return;
+    let params = new HttpParams();
+    if(visitorId) {
+      params = params.set('visitorId', visitorId);
+    }
     return this.http.get<Array<Post>>(this.baseUrl + `/post/user/${id}`, {
       headers: headers,
+      params: params
     });
   }
 

@@ -1,5 +1,5 @@
 /**
- * 04-Mar-2025
+ * 26-Mar-2025
  */
 package com.socio.postsservice.model;
 
@@ -12,20 +12,19 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 import lombok.Data;
 
 /**
- * Posts model
+ * Like model to save list of likes on a post
  */
-@Document
 @Data
-public class Post {
-
+@Document
+public class Like {
 	@MongoId
 	private String id;
-	private String caption;
+
+	@Indexed
+	private String postId;
+
 	@Indexed
 	private long userId;
-	private String imageUrl;
-	private String location;
-	private boolean covered;
-	private boolean needBlurBackground;
+
 	private Date timestamp;
 }

@@ -53,7 +53,8 @@ export class PostEditorComponent implements OnInit {
     userId: 1,
     covered: false,
     needBlurBackground: false,
-    timestamp: new Date()
+    timestamp: new Date(),
+    likeCount: 0,
   };
   user!: User;
 
@@ -115,7 +116,8 @@ export class PostEditorComponent implements OnInit {
         userId: this.user.id,
         covered: value.covered ?? false,
         needBlurBackground: value.needBlurBackground ?? false,
-        timestamp: new Date()
+        timestamp: new Date(),
+        likeCount: 0
       };
     });
   }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -63,8 +64,8 @@ public class PostController {
 	 * @return List of {@link ResponsePostDto}
 	 */
 	@GetMapping("/user/{userId}")
-	public ResponseEntity<List<ResponsePostDto>> getPost(@PathVariable("userId") long id){
-		return new ResponseEntity<>(service.getPost(id), HttpStatus.OK);
+	public ResponseEntity<List<ResponsePostDto>> getPost(@PathVariable("userId") long id, @RequestParam(name = "visitorId", required = false) Object visitorId){
+		return new ResponseEntity<>(service.getPost(id, visitorId), HttpStatus.OK);
 	}
 	
 	/**
