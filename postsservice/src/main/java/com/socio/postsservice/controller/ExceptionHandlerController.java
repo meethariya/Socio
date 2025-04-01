@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.socio.postsservice.dto.ExceptionResponse;
+import com.socio.postsservice.exception.CommentNotFoundException;
 import com.socio.postsservice.exception.InvalidInputException;
 import com.socio.postsservice.exception.PostNotFoundException;
 
@@ -23,41 +24,61 @@ public class ExceptionHandlerController {
 
 	/**
 	 * Exception handler for Post Not Found
+	 * 
 	 * @param e {@link PostNotFoundException}
 	 * @return {@link ExceptionResponse} with status 404
 	 */
 	@ExceptionHandler(PostNotFoundException.class)
 	public ResponseEntity<ExceptionResponse> handlePostNotFoundException(PostNotFoundException e) {
 		log.error(e.getMessage());
-		return new ResponseEntity<>(responseGenerator((short)404, "Post not found", e.getMessage()), HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(responseGenerator((short) 404, "Post not found", e.getMessage()),
+				HttpStatus.NOT_FOUND);
+	}
+
+	/**
+	 * Exception handler for Comment Not Found
+	 * 
+	 * @param e {@link CommentNotFoundException}
+	 * @return {@link ExceptionResponse} with status 404
+	 */
+	@ExceptionHandler(CommentNotFoundException.class)
+	public ResponseEntity<ExceptionResponse> handleCommentNotFoundException(CommentNotFoundException e) {
+		log.error(e.getMessage());
+		return new ResponseEntity<>(responseGenerator((short) 404, "Comment not found", e.getMessage()),
+				HttpStatus.NOT_FOUND);
 	}
 
 	/**
 	 * Exception handler for Invalid User Input
+	 * 
 	 * @param e {@link PostNotFoundException}
 	 * @return {@link ExceptionResponse} with status 422
 	 */
 	@ExceptionHandler(InvalidInputException.class)
 	public ResponseEntity<ExceptionResponse> handleInvalidInputException(InvalidInputException e) {
 		log.error(e.getMessage());
-		return new ResponseEntity<>(responseGenerator((short)422, "Invalid User Input", e.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
+		return new ResponseEntity<>(responseGenerator((short) 422, "Invalid User Input", e.getMessage()),
+				HttpStatus.UNPROCESSABLE_ENTITY);
 	}
-	
+
 	/**
 	 * Exception handler for generic Exception
+	 * 
 	 * @param e {@link Exception}
 	 * @return {@link ExceptionResponse} with status 500
 	 */
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ExceptionResponse> handleException(Exception e) {
 		log.error(e.getMessage(), e.fillInStackTrace());
-		return new ResponseEntity<>(responseGenerator((short)500, "Unexpected error occured", e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(responseGenerator((short) 500, "Unexpected error occured", e.getMessage()),
+				HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+
 	/**
 	 * Create exception response
+	 * 
 	 * @param status status code
-	 * @param error error title
+	 * @param error  error title
 	 * @param detail error description
 	 * @return {@link ExceptionResponse}
 	 */

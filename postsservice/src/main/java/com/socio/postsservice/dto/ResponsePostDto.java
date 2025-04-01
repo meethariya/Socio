@@ -23,4 +23,6 @@ public class ResponsePostDto {
 	
 	private long likeCount;
 	private boolean likedByVisitor;
+	
+	private long commentCount;
 }

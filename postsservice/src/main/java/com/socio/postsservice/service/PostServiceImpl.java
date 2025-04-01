@@ -27,6 +27,7 @@ import com.socio.postsservice.exception.InvalidInputException;
 import com.socio.postsservice.exception.PostNotFoundException;
 import com.socio.postsservice.model.Post;
 import com.socio.postsservice.projections.LikePostIdProjection;
+import com.socio.postsservice.repository.CommentRepository;
 import com.socio.postsservice.repository.LikeRepository;
 import com.socio.postsservice.repository.PostRepository;
 
@@ -39,13 +40,15 @@ public class PostServiceImpl implements PostService {
 	private ModelMapper modelMapper;
 	private PostRepository repo;
 	private LikeRepository likeRepo;
+	private CommentRepository commentRepo;
 
 	private static final String UPLOAD_DIR = "/uploads";
 
-	PostServiceImpl(ModelMapper modelMapper, PostRepository repo, LikeRepository likeRepo) {
+	PostServiceImpl(ModelMapper modelMapper, PostRepository repo, LikeRepository likeRepo, CommentRepository commentRepo) {
 		this.modelMapper = modelMapper;
 		this.repo = repo;
 		this.likeRepo = likeRepo;
+		this.commentRepo = commentRepo;
 	}
 
 	@Override
@@ -94,6 +97,8 @@ public class PostServiceImpl implements PostService {
 	public List<ResponsePostDto> getPost(long id, Object visitorId) {
 		List<ResponsePostDto> response = repo.findByUserIdOrderByTimestampDesc(id).stream().map(this::modelToResponse)
 				.toList();
+		
+		// set like count and if is liked by visitor or not
 		if (visitorId == null)
 			return response;
 		long vId = Long.parseLong(String.valueOf(visitorId));
@@ -136,6 +141,7 @@ public class PostServiceImpl implements PostService {
 		Files.deleteIfExists(Paths.get(post.getImageUrl()));
 		repo.deleteById(id);
 		likeRepo.deleteByPostId(id);
+		commentRepo.deleteByPostId(id);
 	}
 
 	private Post requestToModel(RequestPostDto postDto) {
@@ -146,7 +152,10 @@ public class PostServiceImpl implements PostService {
 
 	private ResponsePostDto modelToResponse(Post post) {
 		ResponsePostDto dto = modelMapper.map(post, ResponsePostDto.class);
+		// set like and comment count
 		dto.setLikeCount(likeRepo.countByPostId(post.getId()));
+		dto.setCommentCount(commentRepo.countByPostId(post.getId()));
+		
 		return dto;
 	}
 
