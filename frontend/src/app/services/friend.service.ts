@@ -14,7 +14,7 @@ export class FriendService {
   private http = inject(HttpClient);
   modelService = inject(NgbModal);
 
-  openModal(friendList?: Array<User>, requestList?:Array<Friendship>){
+  openModal(friendList?: Array<User>, requestList?:Array<Friendship>, allowCta?:boolean){
     const userSerachRequired = friendList || requestList ? false: true;
     const modal = this.modelService.open(FriendModalComponent,{
       scrollable: true,
@@ -26,8 +26,9 @@ export class FriendService {
       modal.componentInstance.inputFriendList = friendList;
     }
     if(requestList) {
-      modal.componentInstance.friendRequests=requestList;
+      modal.componentInstance.friendRequests = requestList;
     }
+    modal.componentInstance.allowCta = allowCta ?? false;
     return modal;
   }
 
@@ -69,6 +70,19 @@ export class FriendService {
     return this.http.delete<null>(this.baseUrl+`/friend`, {
       params: params,
       headers: headers
+    });
+  }
+
+  areFriends(user1:string, user2:string){
+    const token = this.getToken();
+    if (token == null) return throwError(() => new Error('No token found'));
+
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+    const params = new HttpParams().set('user1', user1).set("user2",user2);
+
+    return this.http.get<Map<string, boolean>>(this.baseUrl + '/friend/are-friends', {
+      params: params,
+      headers: headers,
     });
   }
 

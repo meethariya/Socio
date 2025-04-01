@@ -39,6 +39,13 @@ public interface PostService {
 	List<ResponsePostDto> getPost(long id, Object visitorId);
 	
 	/**
+	 * Get count of posts of user
+	 * @param userId {@link Long}
+	 * @return number of posts {@link Long}
+	 */
+	Long getPostCount(Long userId);
+	
+	/**
 	 * Update post details
 	 * @param user {@link UpdatePostDto}
 	 * @param id {@link String}

@@ -5,6 +5,7 @@ package com.socio.userservice.service;
 
 import java.util.List;
 
+import com.socio.userservice.dto.ProfileDto;
 import com.socio.userservice.dto.RequestUserDto;
 import com.socio.userservice.dto.ResponseUserDto;
 
@@ -15,6 +16,7 @@ public interface UserService {
 
 	/**
 	 * Create a user
+	 * 
 	 * @param user {@link RequestUserDto}
 	 * @return {@link ResponseUserDto}
 	 */
@@ -22,13 +24,15 @@ public interface UserService {
 
 	/**
 	 * Get User by username
+	 * 
 	 * @param username {@link String}
 	 * @return {@link ResponseUserDto}
 	 */
 	ResponseUserDto getUser(String username);
-	
+
 	/**
 	 * Get User by auth id
+	 * 
 	 * @param authId {@link Long}
 	 * @return {@link ResponseUserDto}
 	 */
@@ -36,29 +40,41 @@ public interface UserService {
 
 	/**
 	 * Get all users
+	 * 
 	 * @return List of {@link ResponseUserDto}
 	 */
 	List<ResponseUserDto> getUser();
 
 	/**
 	 * Update user details
+	 * 
 	 * @param user {@link RequestUserDto}
-	 * @param id {@link Long}
+	 * @param id   {@link Long}
 	 * @return {@link ResponseUserDto}
 	 */
 	ResponseUserDto updateUser(RequestUserDto user, long id);
 
 	/**
 	 * Delete user
+	 * 
 	 * @param id {@link Long}
 	 */
 	void deleteUser(long id);
-	
+
 	/**
 	 * Search all users for its username, name and email
+	 * 
 	 * @param query search parameter
 	 * @return list of relevant users
 	 */
 	List<ResponseUserDto> queryUsers(String query);
+
+	/**
+	 * Get a user's profile summary
+	 * 
+	 * @param username
+	 * @return {@link ProfileDto}
+	 */
+	ProfileDto profileSummary(String username);
 
 }

@@ -18,7 +18,7 @@
           <a type="button" class="btn login" routerLink="/login">Login</a>
           }
           @else{
-          <button class="btn search-button" type="button" (click)="friendService.openModal()">
+          <button class="btn search-button" type="button" (click)="friendService.openModal(undefined, undefined, true)">
             <span>Search people</span>
             <svg height="24px" width="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -27,7 +27,7 @@
             </svg>
           </button>
 
-          <a routerLink="/profile" [title]="authService.userProfile?.username">
+          <a [routerLink]="'/profile/' + authService.userProfile?.username" [title]="authService.userProfile?.username">
             <svg width="48px" height="48px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
               class="user-profile">
 

@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { User } from '../models/user.model';
 import { catchError, mergeMap, Observable, of, tap, throwError } from 'rxjs';
+import { ExceptionResponse } from '../models/exception-response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -31,14 +32,13 @@ export class AuthService {
   }
 
   clearTokens() {
+    this.userProfile=null;
     sessionStorage.removeItem('token');
     localStorage.removeItem('token');
   }
 
-  getUser(username: String, token: String) {
-    return this.http.get<User>(this.baseUrl + `/user/${username}`, {
-      headers: new HttpHeaders({ Authorization: 'Bearer ' + token }),
-    });
+  getUser(username: String) {
+    return this.http.get<User>(this.baseUrl + `/user/by-username/${username}`);
   }
 
   setUserProfile(user: User) {
@@ -49,7 +49,16 @@ export class AuthService {
     if (this.userProfile != null) return of(this.userProfile);
 
     const token = this.getToken();
-    if (token == null) return throwError(() => new Error('No token found'));
+    if (token == null) {
+      const errorResponse: ExceptionResponse = {
+        timestamp: new Date(),
+        status: 401,
+        error: 'Unauthorized',
+        detail: 'No token found',
+        isFrontend: true
+      };
+      return throwError(() => errorResponse);
+    }
 
     const params = new HttpParams().set('token', token);
     const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });

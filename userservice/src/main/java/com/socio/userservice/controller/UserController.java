@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.socio.userservice.dto.ProfileDto;
 import com.socio.userservice.dto.RequestUserDto;
 import com.socio.userservice.dto.ResponseUserDto;
 import com.socio.userservice.service.UserService;
@@ -36,6 +37,7 @@ public class UserController {
 
 	/**
 	 * Create a user
+	 * 
 	 * @param user {@link RequestUserDto}
 	 * @return {@link ResponseUserDto}
 	 */
@@ -46,16 +48,18 @@ public class UserController {
 
 	/**
 	 * Get User by username
+	 * 
 	 * @param username {@link String}
 	 * @return {@link ResponseUserDto}
 	 */
-	@GetMapping("/{username}")
+	@GetMapping("/by-username/{username}")
 	public ResponseEntity<ResponseUserDto> getUser(@PathVariable("username") String username) {
 		return new ResponseEntity<>(service.getUser(username), HttpStatus.OK);
 	}
 
 	/**
 	 * Get all users
+	 * 
 	 * @return List of {@link ResponseUserDto}
 	 */
 	@GetMapping
@@ -65,6 +69,7 @@ public class UserController {
 
 	/**
 	 * Get User by authId
+	 * 
 	 * @param authId {@link long}
 	 * @return {@link ResponseUserDto}
 	 */
@@ -75,8 +80,9 @@ public class UserController {
 
 	/**
 	 * Update user details
+	 * 
 	 * @param user {@link RequestUserDto}
-	 * @param id {@link Long}
+	 * @param id   {@link Long}
 	 * @return {@link ResponseUserDto}
 	 */
 	@PutMapping("/{id}")
@@ -87,6 +93,7 @@ public class UserController {
 
 	/**
 	 * Delete user
+	 * 
 	 * @param id {@link Long}
 	 */
 	@DeleteMapping("/{id}")
@@ -94,14 +101,26 @@ public class UserController {
 	public void deleteUser(@PathVariable("id") long id) {
 		service.deleteUser(id);
 	}
-	
+
 	/**
 	 * Search users by username, name and email based on given query
+	 * 
 	 * @param query search query
 	 * @return list of {@link ResponseUserDto}
 	 */
 	@GetMapping("/query-user")
 	public ResponseEntity<List<ResponseUserDto>> queryUsers(@RequestParam("query") String query) {
 		return new ResponseEntity<>(service.queryUsers(query), HttpStatus.OK);
+	}
+
+	/**
+	 * Get a user's profile summary
+	 * 
+	 * @param username {@link String}
+	 * @return {@link ProfileDto} summary
+	 */
+	@GetMapping("/profile-summary/{username}")
+	public ResponseEntity<ProfileDto> profileSummary(@PathVariable("username") String username) {
+		return new ResponseEntity<>(service.profileSummary(username), HttpStatus.OK);
 	}
 }

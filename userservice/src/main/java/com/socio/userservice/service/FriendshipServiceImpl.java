@@ -90,6 +90,11 @@ public class FriendshipServiceImpl implements FriendshipService {
 		friendshipRepository.deleteBySenderIdAndReceiverIdOrSenderIdAndReceiverId(senderId, receiverId, receiverId, senderId);
 	}
 	
+	@Override
+	public boolean areFriends(String username1, String username2) {
+		return friendshipRepository.findBySenderUsernameAndReceiverUsernameOrSenderUsernameAndReceiverUsername(username1, username2, username2, username1).isPresent();
+	}
+	
 	/**
 	 * Converts request friendship dto to model dto. Also fetches sender and receiver user models
 	 * @param dto {@link RequestFriendshipDto}
@@ -125,4 +130,5 @@ public class FriendshipServiceImpl implements FriendshipService {
 	private ResponseUserDto modelToResponse(User user) {
 		return mapper.map(user, ResponseUserDto.class);
 	}
+
 }

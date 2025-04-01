@@ -4,7 +4,7 @@ import { AuthService } from '../../services/auth.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PostService } from '../../services/post.service';
 import { AlertService } from '../../services/alert.service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { PluralPipe } from '../../pipes/plural.pipe';
 
 @Component({
@@ -24,6 +24,7 @@ export class PostComponent {
   modalService = inject(NgbModal);
   postService = inject(PostService);
   alertService = inject(AlertService);
+  router = inject(Router);
 
   openDeleteModal(content: TemplateRef<any>){
     this.modalService.open(content, {centered: true}).result.then(
@@ -59,5 +60,9 @@ export class PostComponent {
         this.postService.likeUnlikePost(formData, this.post().likedByVisitor??false).subscribe({});
       }
     });
+  }
+
+  redirectToProfile() {
+    this.router.navigate([`/profile/${this.username()}`]);
   }
 }

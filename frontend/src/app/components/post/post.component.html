@@ -1,8 +1,8 @@
-<div [class]="'post-card'+ (showOverlay?' show-overlay':'')">
+<article [class]="'post-card'+ (showOverlay?' show-overlay':'')">
   <div class="post-meta">
-    <img src="user-circle.png" alt="{{username()}}" class="profile-picture" loading="lazy" height="36" width="36">
+    <img src="user-circle.png" alt="{{username()}}" class="profile-picture" loading="lazy" height="36" width="36" (click)="redirectToProfile()">
     <div>
-      <h5 class="username">{{username()}}</h5>
+      <h5 class="username" (click)="redirectToProfile()">{{username()}}</h5>
       @if (post().location==null || post().location.length > 0) {
       <p class="location text-muted"><i>{{post().location}}</i></p>
       }
@@ -107,7 +107,7 @@
     </div>
   </div>
   }
-</div>
+</article>
 <ng-template #content let-modal>
   <div class="modal-header">
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross')"></button>

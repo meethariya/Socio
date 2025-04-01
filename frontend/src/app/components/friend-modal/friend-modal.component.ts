@@ -15,6 +15,7 @@ import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user.model';
 import { FriendService } from '../../services/friend.service';
 import { Friendship, FriendshipStatus } from '../../models/friendship.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-friend-modal',
@@ -26,6 +27,7 @@ export class FriendModalComponent implements OnInit {
   alertService = inject(AlertService);
   authService = inject(AuthService);
   friendService = inject(FriendService);
+  router = inject(Router);
   showNoResults = signal(false);
 
   userSearchResults: Array<User> = [];
@@ -35,6 +37,7 @@ export class FriendModalComponent implements OnInit {
   @Input() userSerachRequired!: boolean;
   @Input() inputFriendList!: Array<User>;
   @Input() friendRequests!: Array<Friendship>;
+  @Input() allowCta!:boolean;
 
   searchForm = new FormGroup({
     search: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -187,5 +190,10 @@ export class FriendModalComponent implements OnInit {
         this.alertService.pushAlert('danger', err.error.detail);
       },
     });
+  }
+
+  openUserProfilePage(username: string) {
+    this.router.navigate([`/profile/${username}`]);
+    this.activeModal.dismiss("cross");
   }
 }

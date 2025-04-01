@@ -3,7 +3,9 @@
  */
 package com.socio.userservice.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -114,5 +116,19 @@ public class FriendshipController {
 	@ResponseStatus(HttpStatus.OK)
 	void deleteFriendShip(@RequestParam("senderId") long senderId, @RequestParam("receiverId") long receiverId) {
 		service.deleteFriendShip(senderId, receiverId);
+	}
+	
+	/**
+	 * Check if 2 users are friends or not
+	 * 
+	 * @param user1 user 1
+	 * @param user2 user 2
+	 * @return {@link Map} of {@link Boolean} to make it application/JSON
+	 */
+	@GetMapping("/are-friends")
+	public ResponseEntity<Map<String, Boolean>> areFriends(@RequestParam("user1") String username1, @RequestParam("user2") String username2 ){
+		Map<String, Boolean> response = new HashMap<>();
+		response.put("friends", service.areFriends(username1, username2));
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }

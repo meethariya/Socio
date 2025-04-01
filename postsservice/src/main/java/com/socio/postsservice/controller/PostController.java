@@ -69,6 +69,16 @@ public class PostController {
 	}
 	
 	/**
+	 * Get count of posts by user
+	 * @param id userId {@link Long}
+	 * @return number of posts {@link Long}
+	 */
+	@GetMapping("/user/post-count/{userId}")
+	public ResponseEntity<Long> getPostCount(@PathVariable("userId") long id) {
+		return new ResponseEntity<>(service.getPostCount(id), HttpStatus.OK);
+	}
+	
+	/**
 	 * Update post details
 	 * @param user {@link RequestPostDto}
 	 * @param id {@link String}

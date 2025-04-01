@@ -44,7 +44,7 @@ export class LoginComponent {
         this.authService.setToken(token, this.loginForm.value.rememberMe == null ? false : this.loginForm.value.rememberMe);
 
         // set user profile
-        this.authService.getUser(username, token).subscribe({
+        this.authService.getUser(username).subscribe({
           next: (user) => {this.authService.setUserProfile(user)},
           error: (err) => {
             const exception:ExceptionResponse = err.error;

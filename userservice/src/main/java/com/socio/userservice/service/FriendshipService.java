@@ -67,8 +67,17 @@ public interface FriendshipService {
 	/**
 	 * Delete a friendShip
 	 * 
-	 * @param senderId user id who sent request
+	 * @param senderId   user id who sent request
 	 * @param receiverId user id who got request
 	 */
 	void deleteFriendShip(long senderId, long receiverId);
+
+	/**
+	 * Check if 2 users are friends or not
+	 * 
+	 * @param username1 user 1
+	 * @param username2 user 2
+	 * @return {@link Boolean}
+	 */
+	boolean areFriends(String username1, String username2);
 }

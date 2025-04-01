@@ -105,6 +105,12 @@ public class PostServiceImpl implements PostService {
 			return r;
 		}).toList();
 	}
+	
+
+	@Override
+	public Long getPostCount(Long userId) {
+		return repo.countByUserId(userId);
+	}
 
 	@Override
 	public ResponsePostDto updatePost(UpdatePostDto post, String id) {

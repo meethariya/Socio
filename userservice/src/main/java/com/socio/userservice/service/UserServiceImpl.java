@@ -12,11 +12,15 @@ import org.springframework.stereotype.Service;
 
 import com.socio.userservice.dto.AuthRequest;
 import com.socio.userservice.dto.AuthResponse;
+import com.socio.userservice.dto.ProfileDto;
 import com.socio.userservice.dto.RequestUserDto;
 import com.socio.userservice.dto.ResponseUserDto;
 import com.socio.userservice.exception.UserNotFoundException;
+import com.socio.userservice.model.FriendshipStatus;
 import com.socio.userservice.model.User;
 import com.socio.userservice.openfeign.AuthClient;
+import com.socio.userservice.openfeign.PostClient;
+import com.socio.userservice.repository.FriendshipRepository;
 import com.socio.userservice.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
@@ -32,7 +36,9 @@ public class UserServiceImpl implements UserService {
 
 	private ModelMapper modelMapper;
 	private UserRepository repo;
+	private FriendshipRepository friendRepo;
 	private AuthClient authClient;
+	private PostClient postClient;
 
 	@Override
 	public ResponseUserDto createUser(RequestUserDto user) {
@@ -85,6 +91,20 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<ResponseUserDto> queryUsers(String query) {
 		return repo.findByUsernameContainingIgnoreCaseOrNameContainingIgnoreCaseOrEmailContainingIgnoreCase(query, query, query).stream().map(this::modelToResponse).toList();
+	}
+	
+	@Override
+	public ProfileDto profileSummary(String username) {
+		User user = repo.findByUsername(username).orElseThrow(()-> new UserNotFoundException("No user found with username: "+username));
+		Long postCount = postClient.getPostCount(user.getId());
+		Long friendCount = (long) friendRepo.findBySenderIdAndStatusOrReceiverIdAndStatus(user.getId(), FriendshipStatus.ACCEPTED, user.getId(), FriendshipStatus.ACCEPTED).size();
+		return ProfileDto.builder()
+				.id(user.getId())
+				.username(username)
+				.name(user.getName())
+				.friendCount(friendCount)
+				.postCount(postCount)
+				.build();
 	}
 	
 	/**

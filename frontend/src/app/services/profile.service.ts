@@ -46,6 +46,16 @@ export class ProfileService {
     );
   }
 
+  getProfileSummary(username: string) {
+    return this.http.get<{
+      id: number,
+	    username: string,
+	    name: string,
+	    friendCount: number,
+	    postCount: number
+    }>(this.baseUrl+"/user/profile-summary/"+username);
+  }
+
   private headerGenerator(): HttpHeaders | null {
     const token = sessionStorage.getItem('token');
     if (token == null) {
