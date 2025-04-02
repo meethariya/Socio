@@ -7,6 +7,9 @@ export type Post = {
   covered: boolean;
   needBlurBackground: boolean;
   timestamp: Date;
+
   likeCount: number;
-  likedByVisitor?:boolean;
+  likedByVisitor?: boolean;
+
+  commentCount: number;
 };

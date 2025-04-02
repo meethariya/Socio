@@ -55,6 +55,7 @@ export class PostEditorComponent implements OnInit {
     needBlurBackground: false,
     timestamp: new Date(),
     likeCount: 0,
+    commentCount: 0
   };
   user!: User;
 
@@ -117,7 +118,8 @@ export class PostEditorComponent implements OnInit {
         covered: value.covered ?? false,
         needBlurBackground: value.needBlurBackground ?? false,
         timestamp: new Date(),
-        likeCount: 0
+        likeCount: 0,
+        commentCount: 0
       };
     });
   }

@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
 import { Post } from '../models/post.model';
 import { Router } from '@angular/router';
+import { Comment } from '../models/comment.model';
 
 @Injectable({
   providedIn: 'root'
@@ -69,6 +70,52 @@ export class PostService {
     } else {
       return this.http.delete<null>(this.baseUrl+"/like",{headers:headers, body:formData});
     }
+  }
+
+  getCommentsOfPost(postId: string) {
+    const token = this.getToken();
+    if (token == null){
+      this.router.navigate(['/login']);
+      return throwError(() => new Error('No token found'));
+    }
+
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+
+    return this.http.get<Array<Comment>>(this.baseUrl + "/comment/by-post/" + postId, { headers: headers });
+  }
+
+  addComment(formData: FormData) {
+    const token = this.getToken();
+    if (token == null){
+      this.router.navigate(['/login']);
+      return throwError(() => new Error('No token found'));
+    }
+
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+
+    return this.http.post<Comment>(this.baseUrl+"/comment", formData, { headers: headers });
+  }
+
+  updateComment(formData: FormData, commentId: string) {
+    const token = this.getToken();
+    if (token == null){
+      this.router.navigate(['/login']);
+      return throwError(() => new Error('No token found'));
+    }
+
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+    return this.http.put<Comment>(this.baseUrl+"/comment/"+commentId, formData, { headers: headers });
+  }
+
+  deleteComment(commentId: string) {
+    const token = this.getToken();
+    if (token == null){
+      this.router.navigate(['/login']);
+      return throwError(() => new Error('No token found'));
+    }
+
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+    return this.http.delete<void>(this.baseUrl+"/comment/"+commentId, { headers: headers });
   }
 
   getToken(): string | null {

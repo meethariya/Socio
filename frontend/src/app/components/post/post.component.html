@@ -1,4 +1,4 @@
-<article [class]="'post-card'+ (showOverlay?' show-overlay':'')">
+<article [class]="'post-card'+ (showOverlay?' show-overlay':'') + (showComments?' show-comments':'')">
   <div class="post-meta">
     <img src="user-circle.png" alt="{{username()}}" class="profile-picture" loading="lazy" height="36" width="36" (click)="redirectToProfile()">
     <div>
@@ -10,7 +10,7 @@
       <p class="location text-muted placeholder-glow col-8"><span class="placeholder w-100 rounded-2"></span></p>
       }
     </div>
-    <span class="more" title="more options" (click)="showOverlay = true">
+    <span class="more" title="more options" (click)="showComments=false;showOverlay = true;">
       <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
         <circle cx="12" cy="6" r="1.5" fill="currentColor"/>
         <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
@@ -44,8 +44,12 @@
     </p>
     <div class="data">
       @if (post().likeCount > 0) {
-        <span class="like text-muted">{{post().likeCount}} {{post().likeCount | plural:'like' : 'likes'}}</span>
+        <span class="text-muted">{{post().likeCount}} {{post().likeCount | plural:'like' : 'likes'}}</span>
       }
+      @if (post().commentCount > 0) {
+        <span class="text-muted">{{post().commentCount}} {{post().commentCount | plural:'comment' : 'comments'}}</span>
+      }
+      <span class="text-muted">{{post().timestamp | timeAgo}}</span>
     </div>
   </div>
   <div class="post-cta">
@@ -57,7 +61,7 @@
       </svg>
       <span>Like</span>
     </button>
-    <button class="btn comment">
+    <button class="btn comment" (click)="loadComments()">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           d="M4.49999 20.25C4.37892 20.2521 4.25915 20.2248 4.1509 20.1705C4.04266 20.1163 3.94916 20.0366 3.87841 19.9383C3.80766 19.8401 3.76175 19.7261 3.74461 19.6063C3.72747 19.4864 3.73961 19.3641 3.77999 19.25L5.37999 14C5.03175 13.0973 4.85539 12.1375 4.85999 11.17C4.8584 10.1057 5.06918 9.0518 5.47999 8.06999C5.88297 7.13047 6.45975 6.27549 7.17999 5.54999C7.90382 4.82306 8.76344 4.24545 9.70999 3.84999C10.6889 3.4344 11.7415 3.22021 12.805 3.22021C13.8685 3.22021 14.9211 3.4344 15.9 3.84999C17.3341 4.46429 18.5573 5.48452 19.4191 6.7851C20.2808 8.08568 20.7434 9.60985 20.75 11.17C20.7437 13.2771 19.9065 15.2966 18.42 16.79C17.6945 17.5102 16.8395 18.087 15.9 18.49C14.0091 19.2819 11.8865 19.3177 9.96999 18.59L4.71999 20.19C4.64977 20.22 4.57574 20.2402 4.49999 20.25ZM12.8 4.74999C11.5334 4.75547 10.2962 5.13143 9.24068 5.83153C8.18519 6.53164 7.35763 7.52528 6.85999 8.68999C6.19883 10.2911 6.19883 12.0889 6.85999 13.69C6.91957 13.8548 6.91957 14.0352 6.85999 14.2L5.62999 18.37L9.77999 17.11C9.94477 17.0504 10.1252 17.0504 10.29 17.11C11.0824 17.439 11.932 17.6083 12.79 17.6083C13.648 17.6083 14.4976 17.439 15.29 17.11C16.0708 16.7813 16.779 16.3018 17.3742 15.6989C17.9693 15.096 18.4397 14.3816 18.7583 13.5967C19.077 12.8118 19.2376 11.9717 19.231 11.1245C19.2244 10.2774 19.0508 9.4399 18.72 8.65999C18.2234 7.50094 17.398 6.51285 16.3459 5.81792C15.2937 5.123 14.0609 4.75171 12.8 4.74999Z"
@@ -74,6 +78,7 @@
       <span>Share</span>
     </button>
   </div>
+
   @if(canEdit()){
   <div class="edit-overlay">
     <div class="overlay-bg"></div>
@@ -107,6 +112,41 @@
     </div>
   </div>
   }
+
+  <div class="comment-section">
+    <button type="button" class="close" (click)="showComments = false" title="Close">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="12px" height="12px" viewBox="0 0 32 32" version="1.1">
+        <path d="M19.587 16.001l6.096 6.096c0.396 0.396 0.396 1.039 0 1.435l-2.151 2.151c-0.396 0.396-1.038 0.396-1.435 0l-6.097-6.096-6.097 6.096c-0.396 0.396-1.038 0.396-1.434 0l-2.152-2.151c-0.396-0.396-0.396-1.038 0-1.435l6.097-6.096-6.097-6.097c-0.396-0.396-0.396-1.039 0-1.435l2.153-2.151c0.396-0.396 1.038-0.396 1.434 0l6.096 6.097 6.097-6.097c0.396-0.396 1.038-0.396 1.435 0l2.151 2.152c0.396 0.396 0.396 1.038 0 1.435l-6.096 6.096z"/>
+      </svg>
+    </button>
+    @if (comments().length > 0) {
+      <ul class="comment-list">
+        @for (comment of comments(); track comment.id) {
+         <li class="comment">
+          <app-comment [comment]="comment" (commentDelete)="deleteComment($event)" (commentUpdate)="editComment($event)"></app-comment>
+         </li>
+        }
+      </ul>
+    }
+    @else {
+      <div class="no-commments text-muted">
+        <span>No comments, Be the first one.</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 -0.5 25 25" fill="none">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M5.5 12.9543C5.51239 14.0398 5.95555 15.076 6.73197 15.8348C7.50838 16.5936 8.55445 17.0128 9.64 17.0003H11.646C12.1915 17.0007 12.7131 17.224 13.09 17.6183L14.159 18.7363C14.3281 18.9076 14.5588 19.004 14.7995 19.004C15.0402 19.004 15.2709 18.9076 15.44 18.7363L17.1 17.0003L17.645 16.3923C17.7454 16.2833 17.8548 16.1829 17.972 16.0923C18.9349 15.3354 19.4979 14.179 19.5 12.9543V8.04428C19.4731 5.7845 17.6198 3.97417 15.36 4.00028H9.64C7.38021 3.97417 5.5269 5.7845 5.5 8.04428V12.9543Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M16.1957 12.3245C16.3504 11.9403 16.1644 11.5034 15.7802 11.3486C15.396 11.1939 14.959 11.3799 14.8043 11.7641L16.1957 12.3245ZM14.616 13.2503L15.0898 13.8317L15.0926 13.8294L14.616 13.2503ZM10.364 13.2193L9.87845 13.7909L9.88182 13.7938L10.364 13.2193ZM10.2002 11.7315C10.0517 11.3448 9.61791 11.1517 9.23121 11.3001C8.84451 11.4486 8.65137 11.8824 8.79982 12.2691L10.2002 11.7315ZM10.25 8.00031C10.25 7.58609 9.91421 7.25031 9.5 7.25031C9.08579 7.25031 8.75 7.58609 8.75 8.00031H10.25ZM8.75 9.00031C8.75 9.41452 9.08579 9.75031 9.5 9.75031C9.91421 9.75031 10.25 9.41452 10.25 9.00031H8.75ZM16.25 8.00031C16.25 7.58609 15.9142 7.25031 15.5 7.25031C15.0858 7.25031 14.75 7.58609 14.75 8.00031H16.25ZM14.75 9.00031C14.75 9.41452 15.0858 9.75031 15.5 9.75031C15.9142 9.75031 16.25 9.41452 16.25 9.00031H14.75ZM14.8043 11.7641C14.662 12.1173 14.4334 12.4292 14.1394 12.6712L15.0926 13.8294C15.5804 13.4279 15.9597 12.9105 16.1957 12.3245L14.8043 11.7641ZM14.1422 12.6689C13.1801 13.4528 11.7968 13.4427 10.8462 12.6448L9.88182 13.7938C11.3838 15.0545 13.5696 15.0704 15.0898 13.8317L14.1422 12.6689ZM10.8495 12.6477C10.5597 12.4015 10.3364 12.0865 10.2002 11.7315L8.79982 12.2691C9.02618 12.8587 9.39708 13.382 9.87846 13.7909L10.8495 12.6477ZM8.75 8.00031V9.00031H10.25V8.00031H8.75ZM14.75 8.00031V9.00031H16.25V8.00031H14.75Z" fill="currentColor"/>
+        </svg>
+      </div>
+    }
+    <form class="add-comment-form" [formGroup]="commentForm" (ngSubmit)="addComment()">
+      <input class="comment-input" type="text" name="content" placeholder="comment here..." formControlName="content">
+      <button type="submit" class="comment-submit" [disabled]="commentForm.invalid" title="submit">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12.2929 4.29289C12.6834 3.90237 13.3166 3.90237 13.7071 4.29289L20.7071 11.2929C21.0976 11.6834 21.0976 12.3166 20.7071 12.7071L13.7071 19.7071C13.3166 20.0976 12.6834 20.0976 12.2929 19.7071C11.9024 19.3166 11.9024 18.6834 12.2929 18.2929L17.5858 13H4C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11H17.5858L12.2929 5.70711C11.9024 5.31658 11.9024 4.68342 12.2929 4.29289Z" fill="currentColor"/>
+        </svg>
+      </button>
+    </form>
+  </div>
+
 </article>
 <ng-template #content let-modal>
   <div class="modal-header">
