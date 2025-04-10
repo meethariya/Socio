@@ -24,6 +24,10 @@ spring:
           uri: 'lb://postsservice'
           predicates:
             - 'Path=/post/**, /uploads/**, /like/**, /comment/**'
+        - id: chatservice
+          uri: 'lb://chatservice'
+          predicates:
+            - 'Path=/ws/**, /message/**'
       globalcors:
         cors-configurations:
           '[/**]':

@@ -1,0 +1,38 @@
+server:
+  port: 8005
+
+spring:
+  application:
+    name: chatservice
+  web:
+    resources:
+      add-mappings: false
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/Socio
+      auto-index-creation: true
+  kafka:
+    producer:
+      bootstrap-servers:
+        - localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      bootstrap-servers:
+        - localhost:9092
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      group-id: message-consumer
+      auto-offset-reset: earliest
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: com.socio.chatservice.model
+     
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8003/eureka/
+  instance:
+    prefer-ip-address: true

@@ -1,0 +1,53 @@
+/**
+ * 07-Apr-2025
+ */
+package com.socio.chatservice.config;
+
+import org.apache.kafka.clients.admin.NewTopic;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+
+/**
+ * Configuration for Websocket and other beans
+ */
+@Configuration
+@EnableWebSocketMessageBroker
+public class Config implements WebSocketMessageBrokerConfigurer{
+
+	/**
+	 * Bean for Model Mapper
+	 * @return {@link ModelMapper}
+	 */
+	@Bean
+	ModelMapper modelMapper() {
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		return modelMapper;
+	}
+	
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry
+        	.addEndpoint("/ws")
+			.setAllowedOriginPatterns("*")
+			.withSockJS();
+    }
+
+    @Override
+    public void configureMessageBroker(MessageBrokerRegistry registry) {
+        // Use an in-memory message broker for simplicity; for huge loads, consider a dedicated broker.
+        registry.enableSimpleBroker("/topic");
+        registry.setApplicationDestinationPrefixes("/app");
+    }
+    
+	@Bean
+	NewTopic newTopic() {
+		return new NewTopic("chat-messages", 3, (short) 1);
+	}
+}

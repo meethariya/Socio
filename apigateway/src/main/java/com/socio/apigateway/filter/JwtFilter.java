@@ -109,6 +109,7 @@ public class JwtFilter implements GlobalFilter, Ordered{
 		String path = req.getURI().getPath();
 		String method = req.getMethod().name();
 		return (
+				path.startsWith("/ws") ||
 				path.equals("/user") && method.equals("POST") ||
 				path.startsWith("/user/by-username/") && method.equals("GET") ||
 				path.startsWith("/user/profile-summary/") && method.equals("GET") ||
