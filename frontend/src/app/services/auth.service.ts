@@ -3,12 +3,13 @@ import { inject, Injectable } from '@angular/core';
 import { User } from '../models/user.model';
 import { catchError, mergeMap, Observable, of, tap, throwError } from 'rxjs';
 import { ExceptionResponse } from '../models/exception-response.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly baseUrl = 'http://localhost:8004';
+  private readonly baseUrl = environment.baseUrl;
   private http = inject(HttpClient);
   userProfile: User | null = null;
 

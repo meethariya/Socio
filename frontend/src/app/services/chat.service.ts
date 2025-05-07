@@ -4,6 +4,7 @@ import { Client, IMessage, ReconnectionTimeMode } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { Message, MessageStatus } from '../models/message.model';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class ChatService {
   private messageSubject = new Subject<Message>();
   private notificationAudio = new Audio();
 
-  private readonly baseUrl = 'http://localhost:8004';
+  private readonly baseUrl = environment.baseUrl;
   private readonly WS_URL = this.baseUrl+ '/ws';
 
   constructor() {

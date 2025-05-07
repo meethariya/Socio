@@ -4,12 +4,13 @@ import { throwError } from 'rxjs';
 import { Post } from '../models/post.model';
 import { Router } from '@angular/router';
 import { Comment } from '../models/comment.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
-  private readonly baseUrl = 'http://localhost:8004';
+  private readonly baseUrl = environment.baseUrl;
   private http = inject(HttpClient);
   private router = inject(Router);
 

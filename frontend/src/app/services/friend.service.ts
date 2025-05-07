@@ -5,12 +5,13 @@ import { Friendship, FriendshipStatus } from '../models/friendship.model';
 import { User } from '../models/user.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FriendModalComponent } from '../components/friend-modal/friend-modal.component';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FriendService {
-  private readonly baseUrl = 'http://localhost:8004';
+  private readonly baseUrl = environment.baseUrl;
   private http = inject(HttpClient);
   modelService = inject(NgbModal);
 

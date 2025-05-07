@@ -4,12 +4,13 @@ import { Router } from '@angular/router';
 import { Post } from '../models/post.model';
 import { User } from '../models/user.model';
 import { Friendship } from '../models/friendship.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfileService {
-  private readonly baseUrl = 'http://localhost:8004';
+  private readonly baseUrl = environment.baseUrl;
   private http = inject(HttpClient);
   private router = inject(Router);
 
