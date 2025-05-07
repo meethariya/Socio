@@ -8,7 +8,7 @@ import { ExceptionResponse } from '../models/exception-response.model';
   providedIn: 'root',
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:8004';
+  private readonly baseUrl = 'http://localhost:8004';
   private http = inject(HttpClient);
   userProfile: User | null = null;
 

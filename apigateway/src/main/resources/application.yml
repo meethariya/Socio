@@ -28,10 +28,13 @@ spring:
           uri: 'lb://chatservice'
           predicates:
             - 'Path=/ws/**, /message/**'
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: 'http://localhost:4200, http://127.0.0.1:5500'
+            allowedOrigins: 
+              - "http://localhost:4200"
             allowedMethods:
               - GET
               - POST

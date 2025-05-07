@@ -3,6 +3,8 @@
  */
 package com.socio.chatservice.service;
 
+import java.util.List;
+
 import com.socio.chatservice.dto.RequestMessageDto;
 import com.socio.chatservice.model.Message;
 import com.socio.chatservice.model.MessageStatus;
@@ -17,4 +19,6 @@ public interface MessageService {
 	Message updateStatus(MessageStatus status, String id); 
 	
 	void consumeMessage(Message message);
+	
+	List<Message> getChatHistory(long userId, long friendId);
 }

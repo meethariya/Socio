@@ -9,7 +9,7 @@ import { Friendship } from '../models/friendship.model';
   providedIn: 'root',
 })
 export class ProfileService {
-  private baseUrl = 'http://localhost:8004';
+  private readonly baseUrl = 'http://localhost:8004';
   private http = inject(HttpClient);
   private router = inject(Router);
 

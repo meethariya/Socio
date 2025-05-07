@@ -39,15 +39,15 @@ nav {
 .logout {
   background-color: var(--teal);
 }
-.user-profile {
-  color: var(--teal);
-}
 .cta-group {
   display: flex;
   gap: 1rem;
   @media (max-width:vars.$bs-breakpoint-lg) {
     justify-content: space-evenly;
     flex-wrap: wrap;
+  }
+  a svg{
+    color: var(--teal);
   }
 }
 .search-button{

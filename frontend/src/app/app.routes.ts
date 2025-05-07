@@ -30,5 +30,10 @@ export const routes: Routes = [
     path: 'post-editor/:id',
     pathMatch: "full",
     loadComponent: async () => (await import('./pages/post-editor/post-editor.component')).PostEditorComponent
+  },
+  {
+    path: 'chat',
+    pathMatch: "full",
+    loadComponent: async () => (await import('./pages/chat/chat.component')).ChatComponent
   }
 ];

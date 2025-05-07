@@ -4,6 +4,7 @@
 package com.socio.chatservice.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -33,6 +34,7 @@ public class MessageServiceImpl implements MessageService {
 	private final KafkaTemplate<String, Message> kafkaTemplate;
 	private final SimpMessagingTemplate messagingTemplate;
 	public static final String TOPIC = "chat-messages";
+	public static final String SOCKET_PATH = "/topic/messages.";
 
 	@Override
 	public void createMessage(RequestMessageDto messageDto) {
@@ -50,7 +52,8 @@ public class MessageServiceImpl implements MessageService {
 		message.setStatus(MessageStatus.SENT);
 		repo.save(message);
 
-		messagingTemplate.convertAndSend("/topic/messages." + message.getReceiverId(), message);
+		messagingTemplate.convertAndSend(SOCKET_PATH + message.getReceiverId(), message);
+		messagingTemplate.convertAndSend(SOCKET_PATH + message.getSenderId(), message);
 	}
 
 	@Override
@@ -58,7 +61,14 @@ public class MessageServiceImpl implements MessageService {
 		Message message = repo.findById(id)
 				.orElseThrow(() -> new MessageNotFoundException("No message found with id: " + id));
 		message.setStatus(status);
-		return repo.save(message);
+		message = repo.save(message);
+		messagingTemplate.convertAndSend(SOCKET_PATH + message.getSenderId(), message);
+		return message;
+	}
+	
+	@Override
+	public List<Message> getChatHistory(long userId, long friendId) {
+		return repo.findBySenderIdAndReceiverIdOrSenderIdAndReceiverIdOrderByTimestamp(userId, friendId, friendId, userId);
 	}
 
 	/**

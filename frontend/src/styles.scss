@@ -22,6 +22,8 @@ html,body {
 * {
   font-family: var(--font-roboto);
   font-optical-sizing: auto;
+  scrollbar-color: var(--teal) var(--bs-light);
+  scrollbar-width: thin;
 }
 h1,h2,h3,h4,h5,h6 {
   font-family: var(--font-lora);
@@ -33,7 +35,7 @@ body:has(header) main {
   padding-top: var(--header-height);
 }
 body:has(footer) main {
-  min-height: calc(100vh - var(--footer-height));
+  min-height: max(calc(100vh - var(--footer-height)), 300px);
 }
 .invalid{
   color: var(--bs-form-invalid-color);

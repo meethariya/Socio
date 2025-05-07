@@ -10,7 +10,7 @@ import { FriendModalComponent } from '../components/friend-modal/friend-modal.co
   providedIn: 'root'
 })
 export class FriendService {
-  private baseUrl = 'http://localhost:8004';
+  private readonly baseUrl = 'http://localhost:8004';
   private http = inject(HttpClient);
   modelService = inject(NgbModal);
 

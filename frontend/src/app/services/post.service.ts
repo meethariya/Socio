@@ -9,7 +9,7 @@ import { Comment } from '../models/comment.model';
   providedIn: 'root'
 })
 export class PostService {
-  private baseUrl = 'http://localhost:8004';
+  private readonly baseUrl = 'http://localhost:8004';
   private http = inject(HttpClient);
   private router = inject(Router);
 
