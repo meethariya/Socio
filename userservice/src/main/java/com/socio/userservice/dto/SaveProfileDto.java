@@ -1,26 +1,19 @@
 /**
- * 03-Mar-2025
+ * 09-May-2025
  */
 package com.socio.userservice.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
- * Request DTO for user model 
+ * Save profile picture of user
  */
 @Data
-public class RequestUserDto {
-
+@Builder
+public class SaveProfileDto {
 	private String username;
-	
-	private String password;
-	
-	private String email;
-	
-	private String name;
-	
 	private MultipartFile profilePic;
-	
 }

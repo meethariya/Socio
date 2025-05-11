@@ -43,6 +43,11 @@
   display: flex;
   gap: 1rem;
   cursor: pointer;
+  img{
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+  }
 }
 .friend-message-summary{
   display: flex;

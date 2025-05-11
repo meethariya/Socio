@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.socio.postsservice.dto.RequestPostDto;
 import com.socio.postsservice.dto.ResponsePostDto;
+import com.socio.postsservice.dto.SaveProfileDto;
 import com.socio.postsservice.dto.UpdatePostDto;
 
 /**
@@ -59,4 +60,12 @@ public interface PostService {
 	 * @throws IOException in case deletion of image fails 
 	 */
 	void deletePost(String id) throws IOException;
+	
+	/**
+	 * Save profile picture of user to file system
+	 * @param profileDto
+	 * @return path of the picture saved to
+	 * @throws IOException in case saving image fails
+	 */
+	String saveProfileImage(SaveProfileDto profileDto) throws IOException;
 }

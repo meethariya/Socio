@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.socio.userservice.dto.ExceptionResponse;
+import com.socio.userservice.exception.AsyncException;
 import com.socio.userservice.exception.ClientServiceException;
 import com.socio.userservice.exception.DuplicateFriendshipException;
 import com.socio.userservice.exception.FriendshipNotFoundException;
@@ -69,7 +70,6 @@ public class ExceptionHandlerController {
 		return new ResponseEntity<>(exceptionGenerator((short)409, "Duplicate request", e.getMessage()), HttpStatus.CONFLICT);
 	}
 	
-	
 	/**
 	 * Exception handler for ClientService Exception
 	 * @param e {@link ClientServiceException}
@@ -79,6 +79,17 @@ public class ExceptionHandlerController {
 	public ResponseEntity<ExceptionResponse> handleClientServiceException(ClientServiceException e) {
 		log.error(e.getExceptionResponse().toString());
 		return new ResponseEntity<>(e.getExceptionResponse(), HttpStatus.valueOf(e.getExceptionResponse().getStatus()));
+	}
+	
+	/**
+	 * Exception handler for Async Exception
+	 * @param e {@link ClientServiceException}
+	 * @return {@link ExceptionResponse} with customized status
+	 */
+	@ExceptionHandler(AsyncException.class)
+	public ResponseEntity<ExceptionResponse> handleAsyncException(AsyncException e) {
+		log.error(e.getMessage());
+		return new ResponseEntity<>(exceptionGenerator((short)500, "Error with handling threads", e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	/**

@@ -4,6 +4,7 @@
 package com.socio.userservice.controller;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,8 @@ public class UserController {
 	 * 
 	 * @param user {@link RequestUserDto}
 	 * @return {@link ResponseUserDto}
+	 * @throws ExecutionException 
+	 * @throws InterruptedException 
 	 */
 	@PostMapping
 	public ResponseEntity<ResponseUserDto> createUser(@ModelAttribute RequestUserDto user) {

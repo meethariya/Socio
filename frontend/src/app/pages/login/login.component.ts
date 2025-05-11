@@ -60,7 +60,7 @@ export class LoginComponent {
           const exception:ExceptionResponse = JSON.parse(err.error) as ExceptionResponse;
           this.alertService.pushAlert("danger",exception.detail);
         } else{
-          this.alertService.pushAlert("danger",err.error);
+          this.alertService.pushAlert("danger",err.status + " " + err.statusText);
         }
       },
     });

@@ -1,8 +1,9 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, Signal, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { AlertService } from '../../services/alert.service';
 import { FriendService } from '../../services/friend.service';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-header',
@@ -17,9 +18,13 @@ export class HeaderComponent implements OnInit{
   router = inject(Router);
   title = signal('Socio');
   isCollapsed: boolean = true;
+  userProfile!: Signal<User>;
 
   ngOnInit(): void {
     this.authService.getUserProfile().subscribe({
+      next: (user) => {
+        this.userProfile = signal(user);
+      },
       error: (err) => {
         this.alertService.pushAlert("info", "Login to use all functionalities");
       },

@@ -184,7 +184,7 @@ export class PostEditorComponent implements OnInit {
     this.postService.createPost(formData).subscribe({
       next: (post) => {
         this.alertService.pushAlert("success", "Post uploaded successfully");
-        this.router.navigate(["/profile"]);
+        this.router.navigate([`/profile/${this.user.username}`]);
       },
       error: (err) => {
         this.alertService.pushAlert("danger", err.error.detail);
@@ -209,7 +209,7 @@ export class PostEditorComponent implements OnInit {
     this.postService.updatePost(this.post.id, formData).subscribe({
       next: (post) => {
         this.alertService.pushAlert("success", "Post updated successfully");
-        this.router.navigate(["/profile"]);
+        this.router.navigate([`/profile/${this.user.username}`]);
       },
       error: (err) => {
         const error = err.error as ExceptionResponse;

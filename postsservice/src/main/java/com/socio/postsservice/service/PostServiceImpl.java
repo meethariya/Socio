@@ -22,6 +22,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.socio.postsservice.dto.RequestPostDto;
 import com.socio.postsservice.dto.ResponsePostDto;
+import com.socio.postsservice.dto.SaveProfileDto;
 import com.socio.postsservice.dto.UpdatePostDto;
 import com.socio.postsservice.exception.InvalidInputException;
 import com.socio.postsservice.exception.PostNotFoundException;
@@ -42,7 +43,8 @@ public class PostServiceImpl implements PostService {
 	private LikeRepository likeRepo;
 	private CommentRepository commentRepo;
 
-	private static final String UPLOAD_DIR = "/uploads";
+	private static final String UPLOAD_DIR = File.separator+"uploads";
+	private static final String PROFILE_DIR = "profile";
 
 	PostServiceImpl(ModelMapper modelMapper, PostRepository repo, LikeRepository likeRepo, CommentRepository commentRepo) {
 		this.modelMapper = modelMapper;
@@ -143,6 +145,41 @@ public class PostServiceImpl implements PostService {
 		likeRepo.deleteByPostId(id);
 		commentRepo.deleteByPostId(id);
 	}
+
+	@Override
+	public String saveProfileImage(SaveProfileDto profileDto) throws IOException {
+		MultipartFile profilePic = profileDto.getProfilePic();
+		
+		if(profilePic.isEmpty()) throw new InvalidInputException("No image found for user profile picture");
+		
+		String path = UPLOAD_DIR + File.separator + PROFILE_DIR + File.separator;
+		
+		File uploadDir = new File(path);
+		if (!uploadDir.exists()) {
+			uploadDir.mkdirs();
+		}
+		
+		String fileName = profilePic.getOriginalFilename();
+		if( fileName != null) {
+			fileName = profileDto.getUsername() + getFileExtension(fileName);			
+		} else {
+			fileName = profileDto.getUsername() + ".jpg";
+		}
+		
+		Path filePath = Paths.get(path, fileName);
+		Files.copy(profilePic.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+		// Build only the path
+		return UriComponentsBuilder
+				.fromPath(UPLOAD_DIR + File.separator + PROFILE_DIR + File.separator + fileName).build()
+				.toUriString();
+	}
+	
+	private String getFileExtension(String filename) {
+		int i = filename.lastIndexOf('.');
+		if(i > 0 && i < filename.length()-1) return filename.substring(i);
+		return "";
+	}
+
 
 	private Post requestToModel(RequestPostDto postDto) {
 		Post post = modelMapper.map(postDto, Post.class);

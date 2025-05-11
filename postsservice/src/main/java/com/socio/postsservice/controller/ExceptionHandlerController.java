@@ -3,10 +3,12 @@
  */
 package com.socio.postsservice.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import com.socio.postsservice.dto.ExceptionResponse;
 import com.socio.postsservice.exception.CommentNotFoundException;
@@ -22,6 +24,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ExceptionHandlerController {
 
+	@Value("${spring.servlet.multipart.max-file-size}")
+	private String fileMaxValue;
+	
 	/**
 	 * Exception handler for Post Not Found
 	 * 
@@ -58,6 +63,19 @@ public class ExceptionHandlerController {
 	public ResponseEntity<ExceptionResponse> handleInvalidInputException(InvalidInputException e) {
 		log.error(e.getMessage());
 		return new ResponseEntity<>(responseGenerator((short) 422, "Invalid User Input", e.getMessage()),
+				HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+	
+	/**
+	 * Exception handler for Invalid User Input
+	 * 
+	 * @param e {@link PostNotFoundException}
+	 * @return {@link ExceptionResponse} with status 422
+	 */
+	@ExceptionHandler(MaxUploadSizeExceededException.class)
+	public ResponseEntity<ExceptionResponse> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException e) {
+		log.error(e.getMessage());
+		return new ResponseEntity<>(responseGenerator((short) 422, "File too Big! Should not exceed "+fileMaxValue, e.getMessage()),
 				HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 

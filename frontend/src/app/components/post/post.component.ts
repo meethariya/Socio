@@ -1,4 +1,4 @@
-import { Component, inject, input, output, signal, TemplateRef } from '@angular/core';
+import { Component, inject, input, OnInit, output, signal, TemplateRef } from '@angular/core';
 import { Post } from '../../models/post.model';
 import { AuthService } from '../../services/auth.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';

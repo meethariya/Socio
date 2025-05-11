@@ -1,6 +1,6 @@
 <article [class]="'post-card'+ (showOverlay?' show-overlay':'') + (showComments?' show-comments':'')">
   <div class="post-meta">
-    <img src="user-circle.png" alt="{{username()}}" class="profile-picture" loading="lazy" height="36" width="36" (click)="redirectToProfile()">
+    <img [src]="authService.userProfile!=null && authService.userProfile.profilePic!=null ? (authService.userProfile.profilePic.includes('uploads') ? authService.url:'') + authService.userProfile.profilePic : 'user-circle.png'" alt="{{username()}}" class="profile-picture" loading="lazy" height="36" width="36" (click)="redirectToProfile()">
     <div>
       <h5 class="username" (click)="redirectToProfile()">{{username()}}</h5>
       @if (post().location==null || post().location.length > 0) {

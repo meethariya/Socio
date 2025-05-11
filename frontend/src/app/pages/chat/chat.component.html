@@ -7,7 +7,7 @@
         <ul class="friends-list">
           @for (friend of userFriends(); track friend.id) {
             <li class="friend" (click)="startChat(friend)">
-              <img src="user-circle.png" alt="profile-picture" class="friend-profile-picture" [routerLink]="`/profile/${friend.username}`" height="50" width="50">
+              <img [src]="friend.profilePic!= null ? (friend.profilePic.includes('uploads') ? authService.url:'') + friend.profilePic : 'user-circle.png'" alt="profile-picture" class="friend-profile-picture" [routerLink]="`/profile/${friend.username}`" height="50" width="50">
               <div class="friend-details">
                 <h4>{{friend.name}}</h4>
                 @if (friend.hasNewMessage) {
@@ -28,7 +28,7 @@
               <path fill="currentcolor" d="m237.248 512 265.408 265.344a32 32 0 0 1-45.312 45.312l-288-288a32 32 0 0 1 0-45.312l288-288a32 32 0 1 1 45.312 45.312L237.248 512z"/>
             </svg>
           </button>
-          <img src="user-circle.png" alt="profile-picture" class="friend-profile-picture" height="30" width="30" [routerLink]="`/profile/${currentFriendChat().username}`" title="view profile">
+          <img [src]="currentFriendChat().profilePic!= null ? (currentFriendChat().profilePic?.includes('uploads') ? authService.url:'') + currentFriendChat().profilePic : 'user-circle.png'" alt="profile-picture" class="friend-profile-picture" height="30" width="30" [routerLink]="`/profile/${currentFriendChat().username}`" title="view profile">
           <h5 class="mb-0" [routerLink]="`/profile/${currentFriendChat().username}`" title="view profile">{{currentFriendChat().name}}</h5>
         </nav>
         <ul class="message-list" #chatListRef>

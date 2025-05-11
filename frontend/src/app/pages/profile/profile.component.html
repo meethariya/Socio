@@ -5,7 +5,7 @@
     <div class="container">
       <div class="row">
         <div class="col-4">
-          <img src="user-circle.png" alt="profile-picture" class="profile-picture">
+          <img [src]="userProfile().profilePic!= null ? (userProfile().profilePic?.includes('uploads') ? authService.url:'') + userProfile().profilePic : 'user-circle.png'" alt="profile-picture" class="profile-picture">
         </div>
         <div class="col-8 mt-2">
           <h2 class="name">{{userProfile().name}}</h2>

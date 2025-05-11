@@ -5,16 +5,20 @@ package com.socio.userservice.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.socio.userservice.dto.AuthRequest;
-import com.socio.userservice.dto.AuthResponse;
 import com.socio.userservice.dto.ProfileDto;
 import com.socio.userservice.dto.RequestUserDto;
 import com.socio.userservice.dto.ResponseUserDto;
+import com.socio.userservice.dto.SaveProfileDto;
+import com.socio.userservice.exception.AsyncException;
+import com.socio.userservice.exception.ClientServiceException;
 import com.socio.userservice.exception.UserNotFoundException;
 import com.socio.userservice.model.FriendshipStatus;
 import com.socio.userservice.model.User;
@@ -39,6 +43,7 @@ public class UserServiceImpl implements UserService {
 	private FriendshipRepository friendRepo;
 	private AuthClient authClient;
 	private PostClient postClient;
+	private AsyncService asyncService;
 
 	@Override
 	public ResponseUserDto createUser(RequestUserDto user) {
@@ -51,27 +56,57 @@ public class UserServiceImpl implements UserService {
 		if (byEmail.isPresent()) {
 			throw new DataIntegrityViolationException("User already exists with email: " + user.getEmail());
 		}
+
 		AuthRequest authRequest = AuthRequest.builder().username(user.getUsername()).password(user.getPassword())
 				.build();
-		AuthResponse auth = authClient.createAuth(authRequest);
-		User requestToModel = requestToModel(user);
-		requestToModel.setAuthId(auth.getId());
-		return modelToResponse(repo.save(requestToModel));
+
+		SaveProfileDto profileDto = SaveProfileDto.builder().username(user.getUsername())
+				.profilePic(user.getProfilePic()).build();
+
+		// calls Auth service and post service on different threads
+		CompletableFuture<ResponseUserDto> userFut = asyncService.createAuthCall(authRequest)
+				.thenCombine(asyncService.saveProfilePicCall(profileDto), (auth, profile) -> {
+
+					User requestToModel = requestToModel(user);
+					requestToModel.setAuthId(auth.getId());
+					requestToModel.setProfilePic(profile.get("profilePath"));
+					return modelToResponse(repo.save(requestToModel));
+				});
+		try {
+		    return userFut.get();
+		} catch (ExecutionException ex) {
+		    Throwable cause = ex.getCause();
+
+		    if (cause instanceof ClientServiceException clientEx) {
+		        // Let Spring handle it via @ExceptionHandler
+		        throw clientEx;
+		    }
+
+		    // fallback for other exceptions
+		    throw new AsyncException("Unexpected async error", cause);
+		} catch (InterruptedException e) {
+		    Thread.currentThread().interrupt();
+		    throw new AsyncException("Async operation was interrupted", e);
+		}
+
+
 	}
 
 	@Override
 	public ResponseUserDto getUser(String username) {
-		return modelToResponse(repo.findByUsername(username).orElseThrow(() -> new UserNotFoundException("No user found with username: "+username)));
+		return modelToResponse(repo.findByUsername(username)
+				.orElseThrow(() -> new UserNotFoundException("No user found with username: " + username)));
 	}
 
 	@Override
 	public List<ResponseUserDto> getUser() {
 		return repo.findAll().stream().map(this::modelToResponse).toList();
 	}
-	
+
 	@Override
 	public ResponseUserDto getUserByAuthId(long authId) {
-		return modelToResponse(repo.findByAuthId(authId).orElseThrow(() -> new UserNotFoundException("No user found with authId: "+authId)));
+		return modelToResponse(repo.findByAuthId(authId)
+				.orElseThrow(() -> new UserNotFoundException("No user found with authId: " + authId)));
 	}
 
 	@Override
@@ -87,26 +122,24 @@ public class UserServiceImpl implements UserService {
 		repo.deleteById(id);
 		authClient.deleteAuth(user2.getUsername());
 	}
-	
+
 	@Override
 	public List<ResponseUserDto> queryUsers(String query) {
-		return repo.findByUsernameContainingIgnoreCaseOrNameContainingIgnoreCaseOrEmailContainingIgnoreCase(query, query, query).stream().map(this::modelToResponse).toList();
+		return repo.findByUsernameContainingIgnoreCaseOrNameContainingIgnoreCaseOrEmailContainingIgnoreCase(query,
+				query, query).stream().map(this::modelToResponse).toList();
 	}
-	
+
 	@Override
 	public ProfileDto profileSummary(String username) {
-		User user = repo.findByUsername(username).orElseThrow(()-> new UserNotFoundException("No user found with username: "+username));
+		User user = repo.findByUsername(username)
+				.orElseThrow(() -> new UserNotFoundException("No user found with username: " + username));
 		Long postCount = postClient.getPostCount(user.getId());
-		Long friendCount = (long) friendRepo.findBySenderIdAndStatusOrReceiverIdAndStatus(user.getId(), FriendshipStatus.ACCEPTED, user.getId(), FriendshipStatus.ACCEPTED).size();
-		return ProfileDto.builder()
-				.id(user.getId())
-				.username(username)
-				.name(user.getName())
-				.friendCount(friendCount)
-				.postCount(postCount)
-				.build();
+		Long friendCount = (long) friendRepo.findBySenderIdAndStatusOrReceiverIdAndStatus(user.getId(),
+				FriendshipStatus.ACCEPTED, user.getId(), FriendshipStatus.ACCEPTED).size();
+		return ProfileDto.builder().id(user.getId()).username(username).name(user.getName()).friendCount(friendCount)
+				.postCount(postCount).build();
 	}
-	
+
 	/**
 	 * Return model from request DTO
 	 * 
@@ -126,5 +159,4 @@ public class UserServiceImpl implements UserService {
 	private ResponseUserDto modelToResponse(User user) {
 		return modelMapper.map(user, ResponseUserDto.class);
 	}
-
 }

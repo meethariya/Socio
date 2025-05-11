@@ -4,7 +4,9 @@
 package com.socio.postsservice.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.socio.postsservice.dto.RequestPostDto;
 import com.socio.postsservice.dto.ResponsePostDto;
+import com.socio.postsservice.dto.SaveProfileDto;
 import com.socio.postsservice.dto.UpdatePostDto;
 import com.socio.postsservice.service.PostService;
 
@@ -46,6 +49,19 @@ public class PostController {
 	@PostMapping
 	public ResponseEntity<ResponsePostDto> createPost(@ModelAttribute RequestPostDto post) throws IOException{
 		return new ResponseEntity<>(service.createPost(post), HttpStatus.CREATED);
+	}
+
+	/**
+	 * Create a post
+	 * @param user {@link RequestPostDto}
+	 * @return {@link ResponsePostDto}
+	 * @throws IOException in case saving image fails
+	 */
+	@PostMapping("/profile")
+	public ResponseEntity<Map<String, String>> saveProfile(@ModelAttribute SaveProfileDto profileDto) throws IOException{
+		Map<String, String> op = new HashMap<>();
+		op.put("profilePath", service.saveProfileImage(profileDto));
+		return new ResponseEntity<>(op, HttpStatus.CREATED);
 	}
 	
 	/**

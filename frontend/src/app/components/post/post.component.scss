@@ -34,6 +34,11 @@
     right: 1.5rem;
     cursor: pointer;
   }
+  .profile-picture{
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+  }
 }
 .location{
   margin-bottom: 0;

@@ -100,7 +100,8 @@ export class ProfileComponent implements OnInit {
               email: "",
               name: profile.name,
               username: profile.username,
-              isFriend: 'NOT FRIEND'
+              isFriend: 'NOT FRIEND',
+              profilePic: null,
             });
             this.userFriends = signal(new Array<any>(profile.friendCount));
             this.userPosts = signal(new Array<any>(profile.postCount));

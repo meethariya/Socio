@@ -49,6 +49,11 @@ nav {
   a svg{
     color: var(--teal);
   }
+  a img {
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+  }
 }
 .search-button{
   background-color: var(--off-white);

@@ -20,4 +20,6 @@ public class ResponseUserDto {
 	private String name; 
 	
 	private long authId;
+	
+	private String profilePic;
 }

@@ -4,6 +4,7 @@
 package com.socio.userservice.service;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import com.socio.userservice.dto.ProfileDto;
 import com.socio.userservice.dto.RequestUserDto;
@@ -19,6 +20,8 @@ public interface UserService {
 	 * 
 	 * @param user {@link RequestUserDto}
 	 * @return {@link ResponseUserDto}
+	 * @throws ExecutionException 
+	 * @throws InterruptedException 
 	 */
 	ResponseUserDto createUser(RequestUserDto user);
 
