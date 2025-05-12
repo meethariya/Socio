@@ -21,4 +21,6 @@ public interface MessageService {
 	void consumeMessage(Message message);
 	
 	List<Message> getChatHistory(long userId, long friendId);
+	
+	List<Long> getUnreadMessage(long userId);
 }

@@ -43,6 +43,11 @@ public class MessageController {
 	public ResponseEntity<List<Message>>getChatHistory(@RequestParam("userId") long userId, @RequestParam("friendId") long friendId){
 		return new ResponseEntity<>(service.getChatHistory(userId, friendId), HttpStatus.OK);
 	}
+	
+	@GetMapping("/message/unread-message")
+	public ResponseEntity<List<Long>> getUnreadMessages(@RequestParam("userId") long userId) {
+		return new ResponseEntity<>(service.getUnreadMessage(userId), HttpStatus.OK);
+	}
 
 	@PutMapping("/message/{id}")
 	public ResponseEntity<Message> updateMessageStatus(@RequestBody Map<String, String> body,

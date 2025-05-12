@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.socio.chatservice.model.Message;
+import com.socio.chatservice.projections.MessageSenderIdProjection;
 
 /**
  * Repository Layer for {@link Message}
@@ -15,4 +16,6 @@ import com.socio.chatservice.model.Message;
 public interface MessageRepository extends MongoRepository<Message, String> {
 
 	List<Message> findBySenderIdAndReceiverIdOrSenderIdAndReceiverIdOrderByTimestamp(long senderId1, long receiverId1, long senderId2, long receiverId2);
+	
+	List<MessageSenderIdProjection> findByReceiverIdAndStatusOrderByTimestamp(long receiverId, String status);
 }

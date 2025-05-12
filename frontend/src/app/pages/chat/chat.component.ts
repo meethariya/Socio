@@ -52,8 +52,7 @@ export class ChatComponent implements OnInit, OnDestroy{
     this.authService.getUserProfile().subscribe({
       next: (u) => {
         this.userProfile = signal(u);
-        this.chatService.subscribeToMessages(u.id);
-
+        this.chatService.setOnChatPage(true);
         this.chatService.getMessages().subscribe({
           next: (m) => {
             if(m.senderId === this.userProfile().id) {
@@ -91,6 +90,7 @@ export class ChatComponent implements OnInit, OnDestroy{
               for (const f of this.userFriends()) {
                 if(f.id == m.senderId) {
                   f.hasNewMessage = true;
+                  friendFound = true;
                   break;
                 }
               }
@@ -105,6 +105,11 @@ export class ChatComponent implements OnInit, OnDestroy{
         this.profileService.getFriends(u.id)?.subscribe({
           next: (friends) => {
             this.userFriends = signal(friends);
+
+            for (let index = this.chatService.userUnreadMessageSenderId().length-1; index >= 0; index--) {
+              this.bumpFriend(this.chatService.userUnreadMessageSenderId()[index]);
+              this.userFriends()[0].hasNewMessage=true;
+            }
           },
           error: (err) => this.errorDisplayer(err),
         });
@@ -116,6 +121,7 @@ export class ChatComponent implements OnInit, OnDestroy{
   ngOnDestroy(): void {
     this.currentFriendChat = undefined;
     this.messageList = signal([]);
+    this.chatService.setOnChatPage(false);
   }
 
   mobileChatBack() {
@@ -128,6 +134,7 @@ export class ChatComponent implements OnInit, OnDestroy{
     for (const f of this.userFriends()) {
       if(f.id==friend.id) {
         f.hasNewMessage=false;
+        this.chatService.userUnreadMessageSenderId = signal(this.chatService.userUnreadMessageSenderId().filter(sId => sId!=f.id));
         break;
       }
     }
@@ -211,7 +218,6 @@ export class ChatComponent implements OnInit, OnDestroy{
       ];
     });
   }
-
 
   errorDisplayer(err: any) {
     const exception: ExceptionResponse = err.error;

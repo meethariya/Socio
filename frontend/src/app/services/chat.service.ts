@@ -1,25 +1,31 @@
-import { inject, Injectable } from '@angular/core';
-import { Observable, Subject, throwError } from 'rxjs';
+import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { Client, IMessage, ReconnectionTimeMode } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { Message, MessageStatus } from '../models/message.model';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { ExceptionResponse } from '../models/exception-response.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChatService {
-  private client: Client;
+  private client!: Client;
   private http = inject(HttpClient);
-  private connected = false;
   private messageSubject = new Subject<Message>();
+  private onChatPage = new BehaviorSubject<boolean>(false);
   private notificationAudio = new Audio();
 
   private readonly baseUrl = environment.baseUrl;
   private readonly WS_URL = this.baseUrl+ '/ws';
 
+  public userUnreadMessageSenderId: WritableSignal<number[]> = signal([]);
+  public connected = false;
+
   constructor() {
+    if(this.connected) return;
+
     this.client = new Client({
       webSocketFactory: () => new SockJS(this.WS_URL),
       reconnectDelay: 5000,
@@ -67,10 +73,25 @@ export class ChatService {
     return this.messageSubject.asObservable();
   }
 
+  public isOnChatPage(): Observable<boolean> {
+    return this.onChatPage.asObservable();
+  }
+
+  public setOnChatPage(isOnChatPage: boolean): void {
+    this.onChatPage.next(isOnChatPage);
+  }
+
   getChatHistory(userId:number, friendId: number) {
     const token = this.getToken();
     if (token == null){
-      return throwError(() => new Error('No token found'));
+      const errorResponse: ExceptionResponse = {
+        timestamp: new Date(),
+        status: 401,
+        error: 'Unauthorized',
+        detail: 'No token found',
+        isFrontend: true
+      };
+      return throwError(() => errorResponse);
     }
 
     const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
@@ -94,6 +115,24 @@ export class ChatService {
 
   playNotification(){
     this.notificationAudio.play().catch(err => console.warn("Failed to play notification: ", err));
+  }
+
+  getUserUnreadMessage(userId:number) {
+    const token = this.getToken();
+    if (token == null) {
+      const errorResponse: ExceptionResponse = {
+        timestamp: new Date(),
+        status: 401,
+        error: 'Unauthorized',
+        detail: 'No token found',
+        isFrontend: true
+      };
+      return throwError(() => errorResponse);
+    }
+
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+    const params = new HttpParams().set('userId', userId);
+    return this.http.get<number[]>(`${this.baseUrl}/message/unread-message`, {headers, params: params});
   }
 
   private getToken(): string | null {

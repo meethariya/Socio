@@ -40,9 +40,8 @@ public class MessageServiceImpl implements MessageService {
 	public void createMessage(RequestMessageDto messageDto) {
 		Message message = repo.save(requestToModel(messageDto));
 
-		String key = Math.min(message.getReceiverId(), message.getSenderId()) + 
-					 "-"+
-					 Math.max(message.getReceiverId(), message.getSenderId());
+		String key = Math.min(message.getReceiverId(), message.getSenderId()) + "-"
+				+ Math.max(message.getReceiverId(), message.getSenderId());
 		kafkaTemplate.send(TOPIC, key, message);
 	}
 
@@ -65,10 +64,17 @@ public class MessageServiceImpl implements MessageService {
 		messagingTemplate.convertAndSend(SOCKET_PATH + message.getSenderId(), message);
 		return message;
 	}
-	
+
 	@Override
 	public List<Message> getChatHistory(long userId, long friendId) {
-		return repo.findBySenderIdAndReceiverIdOrSenderIdAndReceiverIdOrderByTimestamp(userId, friendId, friendId, userId);
+		return repo.findBySenderIdAndReceiverIdOrSenderIdAndReceiverIdOrderByTimestamp(userId, friendId, friendId,
+				userId);
+	}
+
+	@Override
+	public List<Long> getUnreadMessage(long userId) {
+		return repo.findByReceiverIdAndStatusOrderByTimestamp(userId, MessageStatus.SENT.toString()).stream().map(p -> p.getSenderId())
+				.toList();
 	}
 
 	/**
