@@ -35,6 +35,10 @@
           <div id="nameHelp" class="form-text invalid">Name is required.</div>
         }
       </div>
+      <div>
+        <label for="profilePic" class="form-label">Profile Picture</label>
+        <input type="file" class="form-control" id="profilePic" formControlName="profilePic" accept="image/*" (change)="onProfileSelected($event)">
+      </div>
       <button type="submit" class="btn" [disabled]="signUpForm.invalid">Register</button>
     </form>
   </section>

@@ -23,11 +23,14 @@ export class SignUpComponent {
   authService = inject(AuthService);
   alertService = inject(AlertService);
 
+  profilePic: File | null = null;
+
   signUpForm = new FormGroup({
     username: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
     name: new FormControl('', Validators.required),
+    profilePic: new FormControl<String | null>(null),
   });
 
   register(): void {
@@ -45,6 +48,7 @@ export class SignUpComponent {
     formData.append("password", this.signUpForm.value.password);
     formData.append("email", this.signUpForm.value.email);
     formData.append("name", this.signUpForm.value.name);
+    if(this.profilePic != null) formData.append("profilePic", this.profilePic);
 
     this.authService.register(formData).subscribe({
       next: (user) => {
@@ -56,5 +60,21 @@ export class SignUpComponent {
         this.alertService.pushAlert("danger",exception.detail);
       }
     });
+  }
+
+  onProfileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      if(input.files[0].size > 300 * 1024) {
+        this.alertService.pushAlert("danger","File size exceeds 300kb");
+        this.profilePic = null;
+        this.signUpForm.patchValue({ profilePic: null });
+        return;
+      }
+      this.profilePic = input.files[0];
+    } else {
+      this.profilePic = null;
+      this.signUpForm.patchValue({ profilePic: null });
+    }
   }
 }
