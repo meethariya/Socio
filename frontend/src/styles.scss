@@ -40,3 +40,21 @@ body:has(footer) main {
 .invalid{
   color: var(--bs-form-invalid-color);
 }
+.navy-tooltip{
+  .tooltip-inner{
+    background-color: var(--navy);
+    color: var(--off-white);
+  }
+  &.bs-tooltip-end .tooltip-arrow::before{
+    border-right-color: var(--navy);
+  }
+  &.bs-tooltip-start .tooltip-arrow::before{
+    border-left-color: var(--navy);
+  }
+  &.bs-tooltip-top .tooltip-arrow::before{
+    border-top-color: var(--navy);
+  }
+  &.bs-tooltip-bottom .tooltip-arrow::before{
+    border-bottom-color: var(--navy);
+  }
+}

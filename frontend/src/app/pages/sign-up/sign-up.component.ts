@@ -11,10 +11,11 @@ import { AlertService } from '../../services/alert.service';
 import { ExceptionResponse } from '../../models/exception-response.model';
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-sign-up',
-  imports: [ReactiveFormsModule, HeaderComponent, FooterComponent],
+  imports: [ReactiveFormsModule, HeaderComponent, FooterComponent, NgbTooltipModule],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.scss',
 })

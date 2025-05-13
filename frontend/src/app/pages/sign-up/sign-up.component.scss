@@ -1,28 +1,43 @@
-main:has(.signup-section){
+main:has(.signup-section) {
   display: flex;
   align-items: center;
 }
-section.signup-section{
+section.signup-section {
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-form.signup-form{
+form.signup-form {
   width: clamp(320px, 25%, 600px);
   display: flex;
   flex-direction: column;
   gap: 16px;
   margin: 1.5rem 0;
-  h1{
+  h1 {
     font-weight: 700;
   }
-  a.register-link{
+  a.register-link {
     font-size: 12px;
   }
-  button[type=submit]{
+  button[type="submit"] {
     background-color: var(--orange);
     color: var(--off-white);
+  }
+  .form-floating:has(.info) {
+    position: relative;
+    .form-control {
+      padding-right: 2rem;
+    }
+    span.info{
+      margin-left: 0.5rem;
+      color: var(--teal);
+      cursor: pointer;
+      position: absolute;
+      z-index: 2;
+      right: 0.5rem;
+      top:20px;
+    }
   }
 }
