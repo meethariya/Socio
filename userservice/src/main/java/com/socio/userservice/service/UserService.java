@@ -6,6 +6,7 @@ package com.socio.userservice.service;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import com.socio.userservice.dto.EditUserDto;
 import com.socio.userservice.dto.ProfileDto;
 import com.socio.userservice.dto.RequestUserDto;
 import com.socio.userservice.dto.ResponseUserDto;
@@ -51,11 +52,11 @@ public interface UserService {
 	/**
 	 * Update user details
 	 * 
-	 * @param user {@link RequestUserDto}
+	 * @param user {@link EditUserDto}
 	 * @param id   {@link Long}
 	 * @return {@link ResponseUserDto}
 	 */
-	ResponseUserDto updateUser(RequestUserDto user, long id);
+	ResponseUserDto updateUser(EditUserDto user, long id);
 
 	/**
 	 * Delete user

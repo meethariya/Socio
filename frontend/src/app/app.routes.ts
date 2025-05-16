@@ -35,5 +35,10 @@ export const routes: Routes = [
     path: 'chat',
     pathMatch: "full",
     loadComponent: async () => (await import('./pages/chat/chat.component')).ChatComponent
+  },
+  {
+    path: 'edit-profile',
+    pathMatch: "full",
+    loadComponent: async () => (await import('./pages/edit-profile/edit-profile.component')).EditProfileComponent
   }
 ];

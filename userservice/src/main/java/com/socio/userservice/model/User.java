@@ -24,7 +24,7 @@ public class User{
 	@Column(unique = true, updatable = false, nullable = false)
 	private String username;
 	
-	@Column(unique = true, updatable = false, nullable = false)
+	@Column(unique = true, nullable = false)
 	private String email;
 	
 	@Column(unique = true, updatable = false, nullable = false)
@@ -33,5 +33,6 @@ public class User{
 	@Column(nullable = false)
 	private String name;
 	
+	@Column(unique = false, nullable = true, updatable = true)
 	private String profilePic;
 }

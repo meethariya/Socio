@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.socio.userservice.dto.EditUserDto;
 import com.socio.userservice.dto.ProfileDto;
 import com.socio.userservice.dto.RequestUserDto;
 import com.socio.userservice.dto.ResponseUserDto;
@@ -84,12 +85,12 @@ public class UserController {
 	/**
 	 * Update user details
 	 * 
-	 * @param user {@link RequestUserDto}
+	 * @param user {@link EditUserDto}
 	 * @param id   {@link Long}
 	 * @return {@link ResponseUserDto}
 	 */
 	@PutMapping("/{id}")
-	public ResponseEntity<ResponseUserDto> updateUser(@ModelAttribute RequestUserDto user,
+	public ResponseEntity<ResponseUserDto> updateUser(@ModelAttribute EditUserDto user,
 			@PathVariable("id") long id) {
 		return new ResponseEntity<>(service.updateUser(user, id), HttpStatus.OK);
 	}

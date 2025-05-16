@@ -1,0 +1,64 @@
+.profile-pic-wrapper{
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+    &:hover .edit-pic-overlay{
+    bottom: 0;
+  }
+}
+.profile-picture{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.edit-pic-overlay{
+  position: absolute;
+  bottom: -100%;
+  left: 0;
+  background-color: var(--jet-black);
+  opacity: 0.6;
+  width: 100%;
+  height: 100%;
+  transition: bottom 300ms ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: var(--teal);
+}
+.details-group{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px #0000001a;
+  padding: 1rem;
+  background-color: var(--beige);
+  .form-control{
+    &:focus{
+      border: 1px solid var(--teal);
+      box-shadow: 0 0 0 0.25rem var(--teal);
+    }
+    &:read-only, &:read-only + label::after{
+      background-color: var(--bs-secondary-bg);
+    }
+  }
+  button[type=submit]{
+    background-color: var(--navy);
+    color: var(--off-white);
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    width: fit-content;
+    transition: transform 300ms ease-in-out;
+    align-self: center;
+    &:disabled{
+      opacity: 0.7;
+    }
+  }
+}

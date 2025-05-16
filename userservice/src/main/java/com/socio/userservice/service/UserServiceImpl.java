@@ -13,6 +13,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.socio.userservice.dto.AuthRequest;
+import com.socio.userservice.dto.EditUserDto;
 import com.socio.userservice.dto.ProfileDto;
 import com.socio.userservice.dto.RequestUserDto;
 import com.socio.userservice.dto.ResponseUserDto;
@@ -73,22 +74,21 @@ public class UserServiceImpl implements UserService {
 					return modelToResponse(repo.save(requestToModel));
 				});
 		try {
-		    return userFut.get();
+			return userFut.get();
 		} catch (ExecutionException ex) {
-		    Throwable cause = ex.getCause();
+			Throwable cause = ex.getCause();
 
-		    if (cause instanceof ClientServiceException clientEx) {
-		        // Let Spring handle it via @ExceptionHandler
-		        throw clientEx;
-		    }
+			if (cause instanceof ClientServiceException clientEx) {
+				// Let Spring handle it via @ExceptionHandler
+				throw clientEx;
+			}
 
-		    // fallback for other exceptions
-		    throw new AsyncException("Unexpected async error", cause);
+			// fallback for other exceptions
+			throw new AsyncException("Unexpected async error", cause);
 		} catch (InterruptedException e) {
-		    Thread.currentThread().interrupt();
-		    throw new AsyncException("Async operation was interrupted", e);
+			Thread.currentThread().interrupt();
+			throw new AsyncException("Async operation was interrupted", e);
 		}
-
 
 	}
 
@@ -110,9 +110,31 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public ResponseUserDto updateUser(RequestUserDto user, long id) {
+	public ResponseUserDto updateUser(EditUserDto user, long id) {
 		User user2 = repo.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-		user2.setName(user.getName());
+
+		if (null != user.getName() && !user.getName().isBlank())
+			user2.setName(user.getName());
+
+		if (null != user.getEmail() && !user.getEmail().isBlank() && !user.getEmail().equals(user2.getEmail())) {
+			Optional<User> byEmail = repo.findByEmail(user.getEmail());
+			if (byEmail.isPresent()) {
+				throw new DataIntegrityViolationException("User already exists with email: " + user.getEmail());
+			}
+			user2.setEmail(user.getEmail());
+		}
+
+		if (null != user.getProfilePic()) {
+			postClient.saveProfile(user2.getUsername(), user.getProfilePic());
+		}
+
+		if (null != user.getCurrentPassword() && null != user.getNewPassword() && !user.getCurrentPassword().isBlank()
+				&& !user.getNewPassword().isBlank()) {
+			AuthRequest request = AuthRequest.builder().username(user2.getUsername())
+					.password(user.getCurrentPassword()).newPassword(user.getNewPassword()).build();
+			authClient.changePassword(user2.getAuthId(), request);
+		}
+
 		return modelToResponse(repo.save(user2));
 	}
 

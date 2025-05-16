@@ -7,6 +7,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import com.socio.userservice.dto.AuthRequest;
 import com.socio.userservice.dto.AuthResponse;
@@ -33,4 +34,14 @@ public interface AuthClient {
 	 */
 	@DeleteMapping("/auth/{username}")
 	public void deleteAuth(@PathVariable("username") String username);
+
+	/**
+	 * Update password of user
+	 * 
+	 * @param id      auth Id
+	 * @param request {@link AuthRequest}
+	 * @return {@link AuthResponse}
+	 */
+	@PutMapping(path = "/auth/{id}", consumes = "multipart/form-data")
+	public AuthResponse changePassword(@PathVariable("id") long id, AuthRequest request);
 }

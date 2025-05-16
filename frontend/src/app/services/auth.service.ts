@@ -77,6 +77,22 @@ export class AuthService {
       );
   }
 
+  updateProfile(formData: FormData, userId: number) {
+    const token = this.getToken();
+    if (token == null) {
+      const errorResponse: ExceptionResponse = {
+        timestamp: new Date(),
+        status: 401,
+        error: 'Unauthorized',
+        detail: 'No token found',
+        isFrontend: true
+      };
+      return throwError(() => errorResponse);
+    }
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+    return this.http.put<User>(this.baseUrl + `/user/${userId}`, formData, {headers});
+  }
+
   public get url() : string {
     return this.baseUrl;
   }

@@ -29,6 +29,22 @@ section.user-profile-section {
   color: var(--off-white);
   user-select: none;
 }
+.profile-group-container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  .edit-profile{
+    background-color: var(--orange);
+    color: var(--off-white);
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+}
 .user-info-labels {
   &, & + h5 {
     font-family: var(--font-roboto);

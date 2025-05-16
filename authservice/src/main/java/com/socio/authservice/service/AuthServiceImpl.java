@@ -74,7 +74,10 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	public AuthResponse changePassword(long id, AuthRequest request) {
 		Auth details = repository.findById(id).orElseThrow(()->new BadCredentialsException("Account does not exists"));
-		details.setPassword(encoder.encode(request.getPassword()));
+		if (!encoder.matches(request.getPassword(), details.getPassword())) {
+			throw new BadCredentialsException("Invalid password");
+		}
+		details.setPassword(encoder.encode(request.getNewPassword()));
 		return modelToResponse(repository.save(details));
 	}
 
