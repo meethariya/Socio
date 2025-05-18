@@ -30,7 +30,7 @@
     <java.version>17</java.version>
     <spring-cloud.version>2024.0.0</spring-cloud.version>
     <node.version>v22.14.0</node.version>
-    <npm.version>11.3.0</npm.version>
+    <npm.version>11.4.0</npm.version>
     <frontend.dir>frontend</frontend.dir>
   </properties>
 
