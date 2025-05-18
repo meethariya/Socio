@@ -44,3 +44,13 @@ spring:
               - OPTIONS
             allowedHeaders: '*'
             allowCredentials: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+        - health
+        - info
+  tracing:
+    sampling:
+      probability: 1.0

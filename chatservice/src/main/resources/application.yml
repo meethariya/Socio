@@ -36,3 +36,14 @@ eureka:
       defaultZone: http://localhost:8003/eureka/
   instance:
     prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+        - health
+        - info
+  tracing:
+    sampling:
+      probability: 1.0

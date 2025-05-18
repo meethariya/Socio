@@ -13,6 +13,12 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
+import brave.propagation.B3Propagation;
+import brave.propagation.Propagation.Factory;
+import feign.Capability;
+import feign.micrometer.MicrometerCapability;
+import io.micrometer.core.instrument.MeterRegistry;
+
 /**
  * Configuration for Websocket and other beans
  */
@@ -29,6 +35,28 @@ public class Config implements WebSocketMessageBrokerConfigurer{
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		return modelMapper;
+	}
+	
+	/**
+	 * Bean for {@link MicrometerCapability}
+	 * 
+	 * @param registry
+	 * @return {@link MicrometerCapability}
+	 */
+	@Bean
+	Capability capability(final MeterRegistry registry) {
+		return new MicrometerCapability(registry);
+	}
+	
+	/**
+	 * Continue same trace id from UI by using the B3 header
+	 * 
+	 * @return {@link B3Propagation}
+	 */
+	@Bean
+	Factory propagationFactory() {
+		return B3Propagation.newFactoryBuilder().injectFormat(B3Propagation.Format.SINGLE) // support "b3: ..." style
+				.build();
 	}
 	
     @Override
