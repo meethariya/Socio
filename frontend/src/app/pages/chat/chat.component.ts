@@ -59,29 +59,34 @@ export class ChatComponent implements OnInit, OnDestroy{
 
               // self message
               // remove temp message
-              var tempMessage = this.messageList().find(message =>
-                message.id === '' &&
-                message.senderId === this.userProfile().id &&
+              var tempMessageIndex = this.messageList().findIndex(message =>
+                message.id.startsWith("temp-message-") &&
                 message.content === m.content
               );
-              if(tempMessage){
-                this.messageList = signal(this.messageList().filter(i => i !== tempMessage));
-                this.messageList().push(m);
+              if(tempMessageIndex !== -1) {
+
+                this.messageList()[tempMessageIndex].status = m.status;
+                this.messageList()[tempMessageIndex].id = m.id;
+                this.messageList()[tempMessageIndex].timestamp = m.timestamp;
+
                 this.scrollToBottom();
               }
 
               // update read status
               this.messageList().forEach(message => {
-                if(message.id !== '' && message.id === m.id) message.status = m.status;
+                if(!message.id.startsWith("temp-message-") && message.id === m.id) message.status = m.status;
               });
 
             } else if(this.currentFriendChat != undefined && m.senderId === this.currentFriendChat().id) {
               // active chat friend message, send read call and push to message list
+              const length = this.messageList().length;
+              this.messageList().push(m);
+
               this.chatService.markMessageAsRead(m.id).subscribe({
-                next: (message) => m.status = message.status,
+                next: (message) => this.messageList()[length].status = message.status,
                 error: (err) => this.errorDisplayer(err)
               });
-              this.messageList().push(m);
+
               this.scrollToBottom();
               this.chatService.playNotification();
             } else {
@@ -96,8 +101,8 @@ export class ChatComponent implements OnInit, OnDestroy{
               }
               if(friendFound) {
                 this.bumpFriend(m.senderId);
+                this.chatService.playNotification();
               }
-              this.chatService.playNotification();
             }
           }
         });
@@ -144,14 +149,18 @@ export class ChatComponent implements OnInit, OnDestroy{
       .subscribe({
         next: (messages) => {
           this.messageList = signal(messages);
-          this.messageList().forEach(message => {
-            if(message.receiverId === this.userProfile().id && message.status === MessageStatus.SENT) {
-              this.chatService.markMessageAsRead(message.id).subscribe({
-                next: (readMessage) => message.status = readMessage.status,
-                error: (err) => this.errorDisplayer(err)
-              });
-            }
-          })
+          if(messages.length === 0) return;
+          this.chatService.markChatAsRead(this.userProfile().id, friend.id).subscribe({
+            next: (messages) => {
+              for (const m of messages) {
+                const idx = this.messageList().findIndex(msg => msg.id === m.id);
+                if (idx !== -1) {
+                  this.messageList()[idx].status = m.status;
+                }
+              }
+            },
+            error: (err) => this.errorDisplayer(err),
+          });
           this.scrollToBottom();
         },
         error: (err) => this.errorDisplayer(err),
@@ -187,7 +196,7 @@ export class ChatComponent implements OnInit, OnDestroy{
     // set temporary messages
     const mes: Message = {
       ...data,
-      id: "",
+      id: `temp-message-${crypto.randomUUID()}`,
       timestamp: new Date(),
     }
     this.messageList().push(mes);

@@ -76,6 +76,17 @@ public class MessageServiceImpl implements MessageService {
 		return repo.findByReceiverIdAndStatusOrderByTimestamp(userId, MessageStatus.SENT.toString()).stream().map(p -> p.getSenderId())
 				.toList();
 	}
+	
+	@Override
+	public List<Message> readAllMessages(long userId, long friendId) {
+		List<Message> messages = repo.findBySenderIdAndReceiverIdAndStatusOrSenderIdAndReceiverIdAndStatusOrderByTimestamp(userId, friendId, MessageStatus.SENT.toString(), friendId, userId, MessageStatus.SENT.toString());
+		messages.stream().forEach(m -> {
+			m.setStatus(MessageStatus.READ);
+			messagingTemplate.convertAndSend(SOCKET_PATH + m.getSenderId(), m);
+			
+		});
+		return repo.saveAll(messages);
+	}
 
 	/**
 	 * Converts request dto for message to modal

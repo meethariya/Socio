@@ -56,4 +56,12 @@ public class MessageController {
 			throw new MessageNotFoundException("Invalid user input");
 		return new ResponseEntity<>(service.updateStatus(MessageStatus.valueOf(body.get("status")), id), HttpStatus.OK);
 	}
+	
+	@PutMapping("/message/read-chat")
+	public ResponseEntity<List<Message>> readAllMessagesOfChat(@RequestBody Map<String, Long> body) {
+		if(body.get("userId") == null || body.get("friendId") == null)
+			throw new MessageNotFoundException("Invalid userid and friendid");
+		
+		return new ResponseEntity<>(service.readAllMessages(body.get("userId"), body.get("friendId")),HttpStatus.ACCEPTED);
+	}
 }

@@ -19,12 +19,12 @@ export class ChatService {
 
   private readonly baseUrl = environment.baseUrl;
   private readonly WS_URL = this.baseUrl+ '/ws';
+  private subscribedToMessages = false;
 
   public userUnreadMessageSenderId: WritableSignal<number[]> = signal([]);
-  public connected = false;
 
   constructor() {
-    if(this.connected) return;
+    if(this.client && this.client.connected) return;
 
     this.client = new Client({
       webSocketFactory: () => new SockJS(this.WS_URL),
@@ -36,7 +36,6 @@ export class ChatService {
 
     this.client.onConnect = () => {
       console.log('Chat service connected.');
-      this.connected = true;
     };
     this.client.activate();
     this.notificationAudio.src = "notification.mp3";
@@ -44,9 +43,11 @@ export class ChatService {
   }
 
   public subscribeToMessages(userId: number): void {
-    if(this.connected) {
+    if(this.client && this.client.connected) {
+      if (this.subscribedToMessages) return;
       this.client.subscribe(`/topic/messages.${userId}`, (message: IMessage) => {
         clearTimeout(timeout);
+        this.subscribedToMessages = true;
         const msg: Message = JSON.parse(message.body);
         this.messageSubject.next(msg);
       });
@@ -111,6 +112,16 @@ export class ChatService {
     const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
 
     return this.http.put<Message>(this.baseUrl+`/message/${messageId}`, {'status': MessageStatus.READ}, {headers: headers});
+  }
+
+  markChatAsRead(userId: number, friendId: number) {
+    const token = this.getToken();
+    if (token == null){
+      return throwError(() => new Error('No token found'));
+    }
+
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+    return this.http.put<Message[]>(this.baseUrl+`/message/read-chat`, {'userId': userId, 'friendId': friendId}, {headers: headers});
   }
 
   playNotification(){
