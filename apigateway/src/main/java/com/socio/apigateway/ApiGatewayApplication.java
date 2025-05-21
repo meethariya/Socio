@@ -6,26 +6,12 @@ import org.springframework.context.annotation.Bean;
 
 import brave.propagation.B3Propagation;
 import brave.propagation.Propagation.Factory;
-import feign.Capability;
-import feign.micrometer.MicrometerCapability;
-import io.micrometer.core.instrument.MeterRegistry;
 
 @SpringBootApplication
 public class ApiGatewayApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ApiGatewayApplication.class, args);
-	}
-
-	/**
-	 * Bean for {@link MicrometerCapability}
-	 * 
-	 * @param registry
-	 * @return {@link MicrometerCapability}
-	 */
-	@Bean
-	Capability capability(final MeterRegistry registry) {
-		return new MicrometerCapability(registry);
 	}
 
 	/**

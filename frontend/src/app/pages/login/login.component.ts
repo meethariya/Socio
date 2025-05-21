@@ -58,7 +58,7 @@ export class LoginComponent {
       error: (err) => {
         if (typeof err.error === 'string') {
           const exception:ExceptionResponse = JSON.parse(err.error) as ExceptionResponse;
-          this.alertService.pushAlert("danger",exception.detail);
+          this.alertService.pushAlert("danger",exception.detail ? exception.detail : exception.error);
         } else{
           this.alertService.pushAlert("danger",err.status + " " + err.statusText);
         }

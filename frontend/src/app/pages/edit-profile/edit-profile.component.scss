@@ -5,8 +5,10 @@
   border-radius: 50%;
   position: relative;
   overflow: hidden;
+  @media (pointer: fine) {
     &:hover .edit-pic-overlay{
-    bottom: 0;
+      bottom: 0;
+    }
   }
 }
 .profile-picture{
@@ -17,7 +19,6 @@
 }
 .edit-pic-overlay{
   position: absolute;
-  bottom: -100%;
   left: 0;
   background-color: var(--jet-black);
   opacity: 0.6;
@@ -29,6 +30,12 @@
   align-items: center;
   cursor: pointer;
   color: var(--teal);
+  @media (pointer: fine) {
+    bottom: -100%;
+  }
+  @media (pointer: coarse) {
+    bottom: 0;
+  }
 }
 .details-group{
   display: flex;

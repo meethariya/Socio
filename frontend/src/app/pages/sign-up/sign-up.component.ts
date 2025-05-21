@@ -58,7 +58,7 @@ export class SignUpComponent {
       },
       error: (err) => {
         const exception:ExceptionResponse = err.error;
-        this.alertService.pushAlert("danger",exception.detail);
+        this.alertService.pushAlert("danger",exception.detail ? exception.detail : exception.error);
       }
     });
   }

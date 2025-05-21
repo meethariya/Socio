@@ -80,6 +80,7 @@ public class UserServiceImpl implements UserService {
 
 			if (cause instanceof ClientServiceException clientEx) {
 				// Let Spring handle it via @ExceptionHandler
+				authClient.deleteAuth(user.getUsername());
 				throw clientEx;
 			}
 

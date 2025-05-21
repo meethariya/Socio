@@ -19,9 +19,6 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import brave.propagation.B3Propagation;
 import brave.propagation.Propagation.Factory;
-import feign.Capability;
-import feign.micrometer.MicrometerCapability;
-import io.micrometer.core.instrument.MeterRegistry;
 
 /**
  * Configuration for security and additional beans
@@ -40,18 +37,7 @@ public class ConfigManager {
 		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		return mapper;
 	}
-	
-	/**
-	 * Bean for {@link MicrometerCapability}
-	 * 
-	 * @param registry
-	 * @return {@link MicrometerCapability}
-	 */
-	@Bean
-	Capability capability(final MeterRegistry registry) {
-		return new MicrometerCapability(registry);
-	}
-	
+
 	/**
 	 * Continue same trace id from UI by using the B3 header
 	 * 
