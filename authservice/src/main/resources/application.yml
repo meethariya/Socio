@@ -4,26 +4,22 @@ eureka:
       defaultZone: http://localhost:8003/eureka/
   instance:
     prefer-ip-address: true
+logging:
+  file:
+    name: /logs/authservice/log.log
 management:
   endpoints:
     web:
       exposure:
-        include:
-        - health
-        - info
-  endpoint:
-    health:
-      show-details: always
+        include: health,info
   tracing:
     sampling:
       probability: 1.0
 server:
-  port: 8000
-  tomcat:
-    max-swallow-size: 5MB
+  port: 8002
 spring:
   application:
-    name: userservice
+    name: authservice
   datasource:
     password: Hariya@123
     url: jdbc:mysql://localhost/socio
@@ -33,13 +29,3 @@ spring:
       ddl-auto: update
     open-in-view: false
     show-sql: true
-  servlet:
-    multipart:
-      max-file-size: 300KB
-  cloud:
-    openfeign:
-      micrometer:
-        enabled: true
-logging:
-  file:
-    name: /logs/userservice/log.log

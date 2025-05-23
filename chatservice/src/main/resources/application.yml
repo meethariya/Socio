@@ -29,7 +29,9 @@ spring:
           json:
             trusted:
               packages: com.socio.chatservice.model
-     
+logging:
+  file:
+    name: /logs/chatservice/log.log
 eureka:
   client:
     service-url:

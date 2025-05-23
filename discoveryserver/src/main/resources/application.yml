@@ -1,0 +1,22 @@
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+    service-url:
+      defaultZone: http://localhost:8003/eureka/
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  tracing:
+    sampling:
+      probability: 1.0
+server:
+  port: 8003
+spring:
+  application:
+    name: discoveryserver
+logging:
+  file:
+    name: /logs/discoveryserver/log.log
