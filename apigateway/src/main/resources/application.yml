@@ -9,6 +9,13 @@ server:
 spring:
   application:
     name: apigateway
+  data:
+    redis:
+      host: redis-18690.c309.us-east-2-1.ec2.redns.redis-cloud.com
+      port: 18690
+      username: default
+      password: ${REDIS_PASSWORD}
+    
   cloud:
     gateway:
       routes:
@@ -44,6 +51,13 @@ spring:
               - OPTIONS
             allowedHeaders: '*'
             allowCredentials: true
+      default-filters:
+      - name: RequestRateLimiter
+        args:
+          key-resolver: "#{@ipKeyResolver}"
+          redis-rate-limiter:
+            replenishRate: 1
+            burstCapacity: 5
 management:
   endpoints:
     web:
