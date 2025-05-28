@@ -6,9 +6,10 @@
   input {
     border-radius: 30px;
     padding-right: 36px;
+    border-color: var(--secondary);
     &:focus {
-      border-color: var(--teal);
-      box-shadow: none;
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 0.25rem #ffb6a77a;
     }
     &::-webkit-search-cancel-button {
       -webkit-appearance: none;
@@ -17,15 +18,21 @@
   }
   button {
     position: absolute;
-    color: var(--teal);
+    color: var(--secondary);
     right: 0;
     top: calc(50% - 18px);
     border: none;
   }
 }
-.bg-orange{
-  background-color: var(--orange);
-  color: var(--off-white);
+.btn-close:focus{
+  box-shadow: 0 0 0 0.25rem #FFB5A740;
+}
+.bg-accent{
+  &, &:active {
+    background-color: var(--accent);
+    color: var(--jett-black);
+    border-color: var(--accent);
+  }
 }
 .modal-body .col-2, .modal-body .col-7{
   cursor: pointer;

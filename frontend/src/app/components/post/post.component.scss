@@ -4,7 +4,8 @@
   width: 100%;
   max-width: 500px;
   border-radius: 0.5rem;
-  border: 2px solid var(--teal);
+  border: 2px solid var(--secondary2);
+  background-color: var();
   overflow: hidden;
   padding: 1rem 0;
   margin: auto;
@@ -51,7 +52,7 @@
   position: relative;
   height: var(--image-height);
   &.placeholder{
-    background-color: #868e96;
+    background-color: var(--jet-black2);
   }
 }
 .post-image,.post-image-background  {
@@ -176,7 +177,7 @@
   bottom: -85%;
   padding-top: 3rem;
   left: 0;
-  background-color: var(--beige);
+  background-color: var(--secondary2);
   z-index: 2;
   display: flex;
   flex-direction: column;
@@ -190,9 +191,12 @@
     top: .5rem;
     left: .5rem;
     color: var(--jet-black);
-    padding: 0.25rem 0.4rem;
     border: none;
     outline: none;
+    border-radius: 50%;
+    &:focus{
+      box-shadow: 0 0 0 0.25rem #3333337a;
+    }
   }
   .no-commments, .comment-list{
     width: 100%;

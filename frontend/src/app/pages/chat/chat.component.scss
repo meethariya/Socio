@@ -1,5 +1,8 @@
 @use '../../../variables' as vars;
 
+main{
+  background-color: var(--off-white);
+}
 .friends-list-section{
   padding-top: 1rem;
   padding-bottom: 1rem;
@@ -36,7 +39,7 @@
     border-radius: 50%;
     height: 0.5rem;
     aspect-ratio: 1;
-    background-color: var(--navy);
+    background-color: var(--accent);
   }
 }
 .friend{
@@ -75,14 +78,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--beige);
+    background-color: var(--off-white);
   }
   .friend-info{
     display: flex;
     align-items: center;
     gap: 1rem;
     padding: 1rem;
-    background-color: var(--beige);
+    background-color: var(--off-white);
     cursor: pointer;
     .back-button{
       background-color: transparent;
@@ -133,9 +136,9 @@
   .user-message{
     align-self: flex-end;
     align-items: flex-end;
-    color: var(--off-white);
+    color: var(--jet-black);
     .content{
-      background-color: var(--navy);
+      background-color: var(--teal);
     }
     &:last-child .status{
       display: block;
@@ -144,9 +147,9 @@
   .friend-message{
     align-self: flex-start;
     align-items: flex-start;
-    color: var(--off-white);
+    color: var(--jet-black);
     .content{
-      background-color: var(--orange);
+      background-color: var(--secondary);
     }
   }
 }
@@ -178,12 +181,12 @@
 
 .user-message-form{
   width: 100%;
-  background-color: var(--beige);
+  background-color: var(--secondary2);
   display: flex;
   align-items: center;
   gap: 1rem;
   padding: 1rem;
-  box-shadow: -2px -2px 6px 0px var(--beige);
+  box-shadow: -2px -2px 6px 0px var(--secondary2);
   .user-message-input{
     border-radius: 8px;
     border: none;
@@ -193,7 +196,7 @@
     width: 100%;
     padding: 8px;
     &:focus-visible{
-      outline: var(--navy) auto 1px;
+      outline: var(--teal) auto 1px;
     }
     &::placeholder{
       font-style: italic;

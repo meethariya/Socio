@@ -7,7 +7,7 @@ header {
   position: fixed;
   top: 0;
   left: 0;
-  background-color: var(--navy);
+  background-color: var(--teal);
   z-index: 10;
   overflow: hidden;
   transition: max-height 1s ease;
@@ -25,8 +25,8 @@ nav {
   align-items: center;
 }
 .navbar-toggler{
-  color: var(--teal);
-  border-color: var(--teal);
+  color: var(--secondary);
+  border-color: var(--secondary);
 }
 .logo-group {
   display: flex;
@@ -37,7 +37,15 @@ nav {
 }
 .login,
 .logout {
-  background-color: var(--teal);
+  font-weight: 700;
+  &, &:active {
+    background-color: var(--secondary);
+    color: var(--jet-black);
+  }
+  &:focus {
+    border: none;
+    box-shadow: 0 0 0 0.25rem rgb(255, 181, 167, 0.25);
+  }
 }
 .cta-group {
   display: flex;
@@ -47,7 +55,7 @@ nav {
     flex-wrap: wrap;
   }
   a svg{
-    color: var(--teal);
+    color: var(--secondary);
   }
   a img {
     border-radius: 50%;
@@ -61,7 +69,7 @@ nav {
       position: absolute;
       top: 0;
       right: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18' fill='none'%3E%3Crect width='18' height='18' rx='9' fill='%23dda853'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18' fill='none'%3E%3Crect width='18' height='18' rx='9' fill='%23FFD6A5'/%3E%3C/svg%3E");
       height: 18px;
       aspect-ratio: 1;
     }
@@ -69,14 +77,14 @@ nav {
 }
 .search-button{
   background-color: var(--off-white);
-  color: var(--teal);
+  color: var(--secondary);
   border-radius: 30px;
   display: flex;
   align-items: center;
   gap: 2rem;
   &:active{
     background-color: var(--off-white);
-    color: var(--teal);
+    color: var(--secondary);
   }
 }
 #navbarSupportedContent {

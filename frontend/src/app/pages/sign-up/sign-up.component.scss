@@ -21,9 +21,15 @@ form.signup-form {
   a.register-link {
     font-size: 12px;
   }
+  input:focus{
+    box-shadow: 0 0 0 3px #FFB5A77a;
+    border-color: var(--secondary);
+  }
   button[type="submit"] {
-    background-color: var(--orange);
-    color: var(--off-white);
+    background-color: var(--accent);
+    color: var(--jet-black);
+    font-weight: 700;
+    border: none;
   }
   .form-floating:has(.info) {
     position: relative;

@@ -20,7 +20,13 @@ form.login-form{
     font-size: 12px;
   }
   button[type=submit]{
-    background-color: var(--orange);
-    color: var(--off-white);
+    background-color: var(--accent);
+    color: var(--jet-black);
+    font-weight: 700;
+    border: none;
+    outline: none;
+    &:focus{
+      box-shadow: 0 0 0 3px #91c5fe7a;
+    }
   }
 }

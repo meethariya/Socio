@@ -6,15 +6,15 @@
 
 .post-form{
   padding: 1.5rem;
-  background-color: var(--teal);
+  background-color: var(--secondary2);
   border-radius: 0.5rem;
   display: flex;
   gap: 1rem;
   flex-direction: column;
   flex-wrap: nowrap;
   input:focus{
-    border-color: var(--orange);
-    box-shadow: 0 0 0 0.25rem #dda85363;
+    border-color: var(--teal);
+    box-shadow: 0 0 0 0.25rem #37A5A57A;
   }
 }
 
@@ -55,8 +55,8 @@
     background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='rgba%28221, 168, 83, 1%29'/></svg>");
   }
   &:checked{
-    background-color: var(--orange);
-    border-color: var(--orange);
+    background-color: var(--teal);
+    border-color: var(--teal);
   }
 }
 
@@ -66,16 +66,21 @@
   padding-left: 2rem;
   padding-right: 2rem;
   align-self: center;
+  font-weight: 700;
   &, &:active{
-    border-color: var(--orange);
-    background-color: var(--orange);
-    color: var(--off-white);
+    border-color: var(--accent);
+    background-color: var(--accent);
+    color: var(--jett-black);
+  }
+  &:focus{
+    box-shadow: 0 0 0 0.25rem #91c5fe7a;
+    border-color: var(--accent);
   }
 }
 
 .preview{
   padding: 1.5rem;
-  background-color: var(--beige);
+  background-color: var(--off-white);
   border-radius: 0.5rem;
   display: flex;
   gap: 1rem;

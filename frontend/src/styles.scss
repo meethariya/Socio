@@ -1,12 +1,13 @@
 @use "bootstrap/scss/bootstrap";
 
 :root {
-  --beige: #fbf5dd;
-  --teal: #a6cdc6;
-  --navy: #16404d;
-  --orange: #dda853;
-  --jet-black: #222222;
-  --off-white: #f8f9fa;
+  --teal: #37A5A5;
+  --secondary: #FFB5A7;
+  --secondary2: #FFD6A5;
+  --jet-black: #333333;
+  --jet-black2: #777777;
+  --off-white: #F2F2F2;
+  --accent: #91c5fe;
   --font-roboto: "Roboto", sans-serif;
   --font-lora: "Lora", serif;
   --header-height: 60px;
@@ -30,6 +31,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 main {
   min-height: 100vh;
+  background-color: #f8ffff;
 }
 body:has(header) main {
   padding-top: var(--header-height);
@@ -40,21 +42,21 @@ body:has(footer) main {
 .invalid{
   color: var(--bs-form-invalid-color);
 }
-.navy-tooltip{
+.teal-tooltip{
   .tooltip-inner{
-    background-color: var(--navy);
+    background-color: var(--teal);
     color: var(--off-white);
   }
   &.bs-tooltip-end .tooltip-arrow::before{
-    border-right-color: var(--navy);
+    border-right-color: var(--teal);
   }
   &.bs-tooltip-start .tooltip-arrow::before{
-    border-left-color: var(--navy);
+    border-left-color: var(--teal);
   }
   &.bs-tooltip-top .tooltip-arrow::before{
-    border-top-color: var(--navy);
+    border-top-color: var(--teal);
   }
   &.bs-tooltip-bottom .tooltip-arrow::before{
-    border-bottom-color: var(--navy);
+    border-bottom-color: var(--teal);
   }
 }
